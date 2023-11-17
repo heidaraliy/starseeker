@@ -1,0 +1,38 @@
+@font-face {
+  font-family: 'JetBrains'; /* Provide a name for your custom font family */
+  src: url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-Bold.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-BoldItalic.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-ExtraBold.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-ExtraBoldItalic.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-ExtraLight.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-ExtraLightItalic.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-Italic.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-Light.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-LightItalic.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-Medium.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-MediumItalic.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-Regular.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-SemiBold.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-SemiBoldItalic.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-Thin.woff2')
+      format('woff2'),
+    url('../fonts/JetBrainsMono/webfonts/JetBrainsMono-ThinItalic.woff2')
+      format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* Use "swap" for better text rendering during font loading */
+}
