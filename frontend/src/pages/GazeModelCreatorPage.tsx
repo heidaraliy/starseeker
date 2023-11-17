@@ -3,7 +3,7 @@ import ModelCreatorWidgetExtension from '../components/ModelCreatorWidgetExtensi
 
 const GazeModelCreatorPage = () => {
   return (
-    <div className="bg-indigo-50 min-h-screen p-12">
+    <div className="bg-indigo-50 min-h-screen p-12 mt-4 lg:mt-0">
       <div className="flex flex-col w-full animate-fade-in-left">
         <div className="flex-1 mt-12 lg:p-8">
           <h1 className="font-heebo font-bold text-4xl tracking-tighter drop-shadow-lg text-indigo-950">

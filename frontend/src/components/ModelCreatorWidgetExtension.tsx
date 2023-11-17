@@ -104,13 +104,6 @@ const ModelCreatorWidgetExtension: React.FC = () => {
     'ETS (Error, Trend, Seasonal)': google_error,
   };
 
-  const handleModelCreatorRefresh = () => {
-    setSelectedLanguage('');
-    setSelectedForecast('');
-    setSelectedModel('');
-    setPackageSelectorKey((prevKey) => prevKey + 1);
-  };
-
   const handleProcessModel = async () => {
     try {
       // Prepare the data you want to send to the backend
@@ -162,7 +155,7 @@ const ModelCreatorWidgetExtension: React.FC = () => {
     return '';
   };
   return (
-    <div className="bg-gray-50 md:w-[38rem] 2xl:w-[42rem] drop-shadow-xl">
+    <div className="bg-gray-50 md:w-[38rem] xl:w-[32rem] 2xl:w-[40rem] drop-shadow-xl">
       <div className="border-2 border-black md:h-[28rem] xl:h-[42rem]">
         <div className="flex justify-center py-6">
           <button

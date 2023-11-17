@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import python_logo from '../assets/python_logo.svg';
 import r_logo from '../assets/r_logo.svg';
 import google_refresh from '../assets/google_refresh.svg';
@@ -21,14 +20,15 @@ import google_plus from '../assets/google_plus.svg';
 import google_paw from '../assets/google_paw.svg';
 import google_weight from '../assets/google_weight.svg';
 import google_rocket from '../assets/google_rocket.svg';
-
 import Dropdown from './Dropdown';
 import PackageSelector from './PackageSelector';
 import Tooltip from './Tooltip';
 
 const ModelCreatorWidget: React.FC = () => {
+  //set key for packageSelectorKey so we can refresh it to default when a user clicks the refresh button.
   const [packageSelectorKey, setPackageSelectorKey] = useState(0);
 
+  //programming language selection consts, states, and handling.
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>('');
 
   const handleLanguageSelect = (language: string) => {
@@ -42,6 +42,7 @@ const ModelCreatorWidget: React.FC = () => {
     R: r_logo,
   };
 
+  //data type selection consts, states, and handling.
   const [selectedForecast, setSelectedForecast] = useState<string | null>('');
 
   const handleForecastSelect = (forecast: string) => {
@@ -60,6 +61,7 @@ const ModelCreatorWidget: React.FC = () => {
     'Logitudinal Data': google_line_chart,
   };
 
+  //model type selection consts, states, and handling.
   const [selectedModel, setSelectedModel] = useState<string | null>('');
 
   const handleModelSelect = (model: string) => {
@@ -106,31 +108,12 @@ const ModelCreatorWidget: React.FC = () => {
     'ETS (Error, Trend, Seasonal)': google_error,
   };
 
+  //handling the user clicking refresh -- this resets all fields to default.
   const handleModelCreatorRefresh = () => {
     setSelectedLanguage('');
     setSelectedForecast('');
     setSelectedModel('');
     setPackageSelectorKey((prevKey) => prevKey + 1);
-  };
-
-  const handleProcessModel = async () => {
-    try {
-      // Prepare the data you want to send to the backend
-      const dataToSend = {
-        selectedLanguage,
-        selectedForecast,
-        // Add any other relevant model parameters here
-      };
-
-      // Replace 'YOUR_BACKEND_ENDPOINT' with the actual endpoint of your backend API
-      const response = await axios.post('YOUR_BACKEND_ENDPOINT', dataToSend);
-
-      // Handle the response from the backend as needed
-      console.log('Response from backend:', response.data);
-    } catch (error) {
-      // Handle errors if the request fails
-      console.error('Error sending data to backend:', error);
-    }
   };
 
   const getTooltipMessage = (option: string) => {
@@ -164,7 +147,7 @@ const ModelCreatorWidget: React.FC = () => {
     return '';
   };
   return (
-    <div className="bg-gray-50 md:w-[42rem] 2xl:w-[52rem] drop-shadow-2xl">
+    <div className="bg-gray-50 md:w-[42rem] xl:w-[36rem] 2xl:w-[44rem] drop-shadow-2xl">
       <div className="border-2 border-black h-[44rem]">
         <div className="drop-shadow-xl tracking-tighter flex flex-row font-JetBrains border-b-2 border-black bg-stone-300 h-[2rem] justify-between items-center">
           <div>

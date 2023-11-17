@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Icon from './Icon';
-import modulo_explore from '../assets/modulo_explore_icon.svg';
-import modulo_usage from '../assets/modulo_usage_icon.svg';
-import modulo_user from '../assets/modulo_user_icon.svg';
-import modulo_settings from '../assets/modulo_settings_icon.svg';
+import modulo_explore from '../assets/datagaze_gaze_icon.png';
+import modulo_usage from '../assets/datagaze_usage_icon.png';
+import modulo_user from '../assets/datagaze_user_icon.png';
+import modulo_settings from '../assets/datagaze_settings_icon.png';
 import { Link } from 'react-router-dom';
 
 const AppSidebar = () => {
@@ -21,13 +21,13 @@ const AppSidebar = () => {
           isSidebarOpen
             ? '-translate-x-6'
             : 'md:-translate-x-[8.2rem] -translate-x-[12.1rem]'
-        } fixed left-2 md:left-0 md:h-[25rem] md:w-40 w-52 bg-white z-50`}
+        } fixed left-2 md:left-0 md:h-[25.5rem] md:w-40 w-52 bg-white z-50`}
       >
         {/* grid parent */}
         <div>
-          {/* Caret icon to toggle the sidebar */}
+          {/* toggle icon */}
           <div className="cursor-pointer" onClick={toggleSidebar}>
-            <span className="absolute right-0 md:right-1 md:top-[11rem] top-[5.4rem] ml-3 z-100 text-2xl font-bold">
+            <span className="absolute right-0 md:right-1 md:top-[11.5rem] top-[5.4rem] ml-3 z-100 text-2xl font-bold">
               {isSidebarOpen ? (
                 <span className="material-symbols-outlined">
                   drag_indicator
@@ -43,7 +43,7 @@ const AppSidebar = () => {
         <div className="grid grid-cols-2 md:grid-cols-1 mr-3 my-2 p-2 z-100">
           {/* icon 1 */}
           <Link to="app/gaze/model_creator">
-            <Icon title="Gaze™" onClick={toggleSidebar} img={modulo_explore} />
+            <Icon title="Gaze" onClick={toggleSidebar} img={modulo_explore} />
           </Link>
           {/* icon 2 */}
           <Icon title="Usage" onClick={toggleSidebar} img={modulo_usage} />

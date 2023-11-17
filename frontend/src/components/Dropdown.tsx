@@ -101,7 +101,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                   className={
                     currentPage === 1
                       ? ''
-                      : 'active:-translate-x-0.5 duration-100'
+                      : 'active:-translate-x-0.5 duration-200'
                   }
                 >
                   <span className="material-symbols-outlined scale-150 pt-1">
@@ -117,7 +117,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                   className={
                     currentPage === totalPages
                       ? ''
-                      : 'active:translate-x-0.5 duration-100'
+                      : 'active:translate-x-0.5 duration-200'
                   }
                 >
                   <span className="material-symbols-outlined scale-150 pt-1">
