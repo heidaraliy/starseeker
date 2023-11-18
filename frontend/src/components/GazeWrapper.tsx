@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import GazeMobilePage from '../pages/GazeMobilePage';
-import GazeModelCreatorPage from '../pages/GazeModelCreatorPage';
+import GazeMobilePage from '../pages/gaze/GazeMobilePage';
+import GazeModelCreatorPage from '../pages/gaze/GazeModelCreatorPage';
 
 const GazeWrapper = () => {
   const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);

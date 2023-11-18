@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import logo from '../assets/datagaze_home_logo.png';
-import colored_logo from '../assets/datagaze_logo.png';
+import logo from '../assets/datagaze_mono.png';
+import colored_logo from '../assets/datagaze_color.png';
 import mono_sign_in from '../assets/datagaze_sign_in_mono.png';
 import colored_sign_in from '../assets/datagaze_sign_in_background.png';
 
@@ -42,39 +42,45 @@ const Navbar = () => {
                 />
               </Link>
             </div>
-            {/* Primary Navbar items */}
+            {/* nav items */}
             <div className="hidden lg:flex items-center space-x-2 ml-4 text-xl font-light">
               <Link
                 to="/products"
-                className={`tracking-tighter font-heebo py-4 px-2 text-white ${
-                  currentPath === '/products' ? 'drop-shadow-xl font-bold' : ''
-                } hover:text-neutral-300 hover:-translate-y-0.5 active:translate-y-0 transition duration-200`}
+                className={`tracking-tighter font-heebo py-4 px-2 text-neutral-50  ${
+                  currentPath === '/products'
+                    ? 'drop-shadow-xl font-bold text-neutral-300'
+                    : ''
+                } hover:text-neutral-300 duration-300`}
               >
                 Products
               </Link>
               <Link
                 to="/solutions"
-                className={`tracking-tighter font-heebo py-4 px-2 text-white ${
-                  currentPath === '/solutions' ? 'drop-shadow-xl font-bold' : ''
-                } hover:text-neutral-300 hover:-translate-y-0.5 active:translate-y-0 transition duration-200`}
+                className={`tracking-tighter font-heebo py-4 px-2 text-neutral-50  ${
+                  currentPath === '/solutions'
+                    ? 'drop-shadow-xl font-bold text-neutral-300'
+                    : ''
+                } hover:text-neutral-300 duration-300`}
               >
                 Solutions
               </Link>
               <Link
                 to="/privacy"
-                className={`tracking-tighter font-heebo py-4 px-2 text-white ${
-                  currentPath === '/privacy' ? 'drop-shadow-xl font-bold' : ''
-                } hover:text-neutral-300 hover:-translate-y-0.5 active:translate-y-0 transition duration-200`}
+                className={`tracking-tighter font-heebo py-4 px-2 text-neutral-50  ${
+                  currentPath === '/privacy'
+                    ? 'drop-shadow-xl font-bold text-neutral-300'
+                    : ''
+                } hover:text-neutral-300 duration-300`}
               >
                 Privacy
               </Link>
               <Link
                 to="/contact_us"
-                className={`tracking-tighter font-heebo py-4 px-2 text-white ${
+                className={`tracking-tighter font-heebo py-4 px-2 text-neutral-50  ${
                   currentPath === '/contact_us'
-                    ? 'drop-shadow-xl font-bold'
+                    ? 'drop-shadow-xl font-bold text-neutral-300'
                     : ''
-                } hover:text-neutral-300 hover:-translate-y-0.5 active:translate-y-0 transition duration-200`}
+                } hover:text-neutral-300 duration-300`}
               >
                 Contact Us
               </Link>
@@ -89,7 +95,7 @@ const Navbar = () => {
                 onMouseEnter={() => setIsSignInHovered(true)}
                 onMouseLeave={() => setIsSignInHovered(false)}
                 alt="Modulo Logo"
-                className="relative border-2 border-black rounded-sm w-28 drop-shadow-lg transition-all hover:drop-shadow-2xl active:translate-y-0.5 duration-300"
+                className="relative border-2 border-neutral-900 rounded-sm w-28 drop-shadow-lg transition-all hover:drop-shadow-2xl active:translate-y-0.5 duration-300"
               />
               <img
                 src={colored_sign_in}

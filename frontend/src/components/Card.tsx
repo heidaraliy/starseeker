@@ -10,7 +10,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ title, description, onClick, img }) => {
   return (
     <div
-      className="lg:h-24 h-20 max-w-xl bg-indigo-50 border-2 border-gray-400 flex flex-row mx-0 lg:mx-2 my-1 rounded-sm shadow-md hover:drop-shadow-lg hover:-translate-y-0.5 cursor-pointer active:translate-y-0.5 duration-200 ease-in-out"
+      className="lg:h-24 h-20 max-w-xl bg-indigo-50 border-2 border-gray-400 flex flex-row mx-0 lg:mx-2 my-1 rounded-sm shadow-md hover:drop-shadow-lg hover:-translate-y-0.5 hover:bg-indigo-100 cursor-pointer active:translate-y-0.5 duration-200 ease-in-out"
       onClick={onClick}
     >
       <img src={img} alt="CardImage" className="lg:h-[5.75rem] h-18" />

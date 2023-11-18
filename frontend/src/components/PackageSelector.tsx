@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Tooltip from './Tooltip';
+import { packageTooltips, placeholderText } from '../consts/packageTooltips';
 
 const PackageSelector = () => {
   const [availablePackages, setAvailablePackages] = useState([
@@ -12,26 +13,10 @@ const PackageSelector = () => {
   ]);
   const [selectedPackages, setSelectedPackages] = useState([]);
 
-  const packageDescriptions = {
-    Optuna:
-      'An open-source hyperparameter optimization framework that automates the process of finding the most effective parameters for machine learning models.',
-    'scikit-learn':
-      'A versatile library for machine learning and data mining that provides simple and efficient tools for data analysis and modeling.',
-    Keras:
-      'A high-level neural networks API designed for human beings, not machines, promoting quick experimentation with deep learning.',
-    TensorFlow:
-      'An end-to-end open-source platform for machine learning that enables researchers to experiment and deploy AI models with ease.',
-    tidymodels:
-      'A collection of packages for modeling and machine learning that share underlying design principles, grammar, and data structures.',
-    statsmodels:
-      'A comprehensive Python module that allows users to explore data, estimate statistical models, and perform statistical tests with a wide array of functions.',
-  };
   const [hoveredPackage, setHoveredPackage] = useState({
     name: '',
     description: '',
   });
-  const placeholderText =
-    'Hover over a package to learn about its functionality.';
 
   const addPackage = (pkg) => {
     setSelectedPackages((currentSelected) => [...currentSelected, pkg]);
@@ -48,7 +33,7 @@ const PackageSelector = () => {
   };
 
   const handleMouseEnter = (pkg) => {
-    setHoveredPackage({ name: pkg, description: packageDescriptions[pkg] });
+    setHoveredPackage({ name: pkg, description: packageTooltips[pkg] });
   };
 
   const handleMouseLeave = () => {
@@ -108,7 +93,7 @@ const PackageSelector = () => {
           </div>
         </div>
       </div>
-      <div className="font-heebo tracking-tighter flex flex-col bg-stone-100 mx-auto -mt-2.5 p-2 border-2 border-black w-11/12 h-[6rem] shadow-lg">
+      <div className="font-heebo tracking-tighter flex flex-col bg-stone-100 mx-auto -mt-2.5 p-2 border-2 border-black md:w-[38rem] xl:w-[32rem] 2xl:w-[40rem] h-[6rem] shadow-lg">
         {hoveredPackage.name ? (
           <Tooltip message={hoveredPackage.description} position="dropdown">
             <div>

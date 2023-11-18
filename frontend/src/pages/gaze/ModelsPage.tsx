@@ -1,14 +1,14 @@
-const ForecastsPage = () => {
+const ModelsPage = () => {
   return (
-    <div className="bg-indigo-200 min-h-screen p-12">
+    <div className="bg-indigo-300 min-h-screen p-10 mt-4 pl-14 lg:pl-6 lg:p-4 lg:mt-0">
       <div className="flex flex-col w-full animate-fade-in-left">
         <div className="flex-1 mt-12 lg:p-8">
-          <h1 className="font-heebo font-bold px-2 text-4xl tracking-tighter drop-shadow-lg text-indigo-950">
-            Forecasts
+          <h1 className="font-heebo font-bold text-3xl xl:text-4xl tracking-tighter drop-shadow-lg text-indigo-950">
+            Models
           </h1>
           <div className="flex flex-col justify-center p-4">
             <div className="font-heebo font-light mb-4 md:text-xl text-xl bg-gray-800 text-transparent bg-clip-text tracking-tighter">
-              Placeholder!
+              View and modify your models.
             </div>
           </div>
         </div>
@@ -17,4 +17,4 @@ const ForecastsPage = () => {
   );
 };
 
-export default ForecastsPage;
+export default ModelsPage;

@@ -8,7 +8,8 @@ interface DropdownProps {
   onSelect: (selectedOption: string) => void;
   placeholder: string;
   currentSelection: string;
-  getToolTipMessage: (option: string) => string;
+  tooltipType: string;
+  getTooltipMessage: (option: string, type: string) => string;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -18,7 +19,8 @@ const Dropdown: React.FC<DropdownProps> = ({
   onSelect,
   placeholder,
   currentSelection,
-  getToolTipMessage,
+  tooltipType,
+  getTooltipMessage,
 }) => {
   // shitty pagination method but dropdowns don't look pleasing otherwise
   const [currentPage, setCurrentPage] = useState(1);
@@ -81,7 +83,7 @@ const Dropdown: React.FC<DropdownProps> = ({
             {currentOptions.map((option, index) => (
               <Tooltip
                 key={index}
-                message={getToolTipMessage(option)}
+                message={getTooltipMessage(option, tooltipType)}
                 position="dropdown"
               >
                 <li

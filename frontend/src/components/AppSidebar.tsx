@@ -17,11 +17,11 @@ const AppSidebar = () => {
     <div className="z-50">
       {/* sidebar */}
       <div
-        className={`tracking-tighter drop-shadow-2xl border-2 border-gray-300 bg-white rounded-br-lg md:w-40 transform transition-transform duration-500 ease-in-out z-100 ${
+        className={`fixed left-2 md:left-0 md:h-[25.5rem] md:w-40 w-52 z-100 tracking-tighter drop-shadow-2xl border-2 border-gray-300 bg-indigo-50 rounded-br-md transform transition-transform duration-500 ${
           isSidebarOpen
             ? '-translate-x-6'
             : 'md:-translate-x-[8.2rem] -translate-x-[12.1rem]'
-        } fixed left-2 md:left-0 md:h-[25.5rem] md:w-40 w-52 bg-white z-50`}
+        }`}
       >
         {/* grid parent */}
         <div>

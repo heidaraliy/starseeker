@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavbarWrapper from './components/NavbarWrapper';
-import Home from './pages/Home';
-import UserDashboardPage from './pages/UserDashboardPage';
-import ModelsPage from './pages/ModelsPage';
+import Home from './pages/product/Home';
+import UserDashboardPage from './pages/gaze/UserDashboardPage';
+import ModelsPage from './pages/gaze/ModelsPage';
 import GazeWrapper from './components/GazeWrapper';
-import DocumentationPage from './pages/DocumentationPage';
-import ForecastsPage from './pages/ForecastsPage';
-import IntegrationsPage from './pages/IntegrationsPage';
+import DocumentationPage from './pages/gaze/DocumentationPage';
+import ForecastsPage from './pages/gaze/ForecastsPage';
+import IntegrationsPage from './pages/gaze/IntegrationsPage';
 
 function App() {
   return (
