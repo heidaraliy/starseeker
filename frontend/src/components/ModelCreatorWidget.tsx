@@ -14,31 +14,31 @@ import { getTooltipMessage } from '../utils/getTooltipMessage';
 import axios from 'axios';
 
 const ModelCreatorWidget: React.FC = () => {
-  //set key for packageSelectorKey so we can refresh it to default when a user clicks the refresh button.
+  //set key for packageSelectorKey so we can refresh it to default when a user clicks the refresh button
   const [packageSelectorKey, setPackageSelectorKey] = useState(0);
 
-  //programming language selection consts, states, and handling.
+  //programming language selection consts, states, and handling
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>('');
 
   const handleLanguageSelect = (language: string) => {
     setSelectedLanguage(language);
   };
 
-  //forecast type selection consts, states, and handling.
+  //forecast type selection consts, states, and handling
   const [selectedForecast, setSelectedForecast] = useState<string | null>('');
 
   const handleForecastSelect = (forecast: string) => {
     setSelectedForecast(forecast);
   };
 
-  //model type selection consts, states, and handling.
+  //model type selection consts, states, and handling
   const [selectedModel, setSelectedModel] = useState<string | null>('');
 
   const handleModelSelect = (model: string) => {
     setSelectedModel(model);
   };
 
-  //handling the user clicking refresh -- this resets all fields to default.
+  //handling the user clicking refresh -- this resets all fields to default
   const handleModelCreatorRefresh = () => {
     setSelectedLanguage('');
     setSelectedForecast('');
@@ -50,19 +50,21 @@ const ModelCreatorWidget: React.FC = () => {
   const handleProcessModel = async () => {
     try {
       const dataToSend = {
-        selectedForecast,
-        selectedLanguage,
-        selectedModel,
+        forecastType: selectedLanguage,
+        language: selectedForecast,
+        selectedModel: selectedModel,
       };
 
-      // Replace 'YOUR_BACKEND_ENDPOINT' with the actual endpoint of your backend API
-      const response = await axios.post('/api/forecast', dataToSend);
+      //endpoint
+      const response = await axios.post('/api/model/create', dataToSend);
 
-      // Handle the response from the backend as needed
-      console.log('Response from backend:', response.data);
+      //success
+      console.log('Model created! Response data:', response.data);
     } catch (error) {
-      // Handle errors if the request fails
-      console.error('Error sending data to backend:', error);
+      //failure
+      console.error('Model creation failure.', error);
+    } finally {
+      //empty
     }
   };
 
