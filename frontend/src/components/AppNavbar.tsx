@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import logo from '../assets/datagaze_mono.png';
-import colored_logo from '../assets/datagaze_color.png';
+import logo from '../assets/starsphere_color_hover.png';
+import colored_logo from '../assets/starsphere_color.png';
 import colored_sign_out from '../assets/datagaze_sign_out_background.png';
 import mono_sign_out from '../assets/datagaze_sign_out_mono.png';
 import AppSidebar from './AppSidebar';
@@ -18,13 +18,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="shadow-xl bg-gradient-to-r from-indigo-900 to-indigo-700 fixed w-screen z-50">
+    <nav className="shadow-xl bg-gradient-to-r from-indigo-500 to-indigo-950 fixed w-screen z-50">
       <div>
         <div className="flex justify-between px-4">
           <div className="flex">
             <div>
               {/* logo */}
-              <Link to="/app/dashboard">
+              <Link to="/prod/dashboard">
                 <img
                   src={logo}
                   style={{ opacity: isHovered ? 1 : 0 }}
@@ -46,9 +46,9 @@ const Navbar = () => {
             {/* nav items */}
             <div className="hidden lg:flex items-center space-x-2 ml-4 text-xl font-light">
               <Link
-                to="/app/dashboard"
+                to="/prod/dashboard"
                 className={`tracking-tighter font-heebo py-4 px-2 text-indigo-50  ${
-                  currentPath === '/app/dashboard'
+                  currentPath === '/prod/dashboard'
                     ? 'drop-shadow-xl font-bold text-indigo-200'
                     : ''
                 } hover:text-indigo-200 duration-300`}
@@ -56,9 +56,9 @@ const Navbar = () => {
                 Dashboard
               </Link>
               <Link
-                to="/app/models"
+                to="/prod/models"
                 className={`tracking-tighter font-heebo py-4 px-2 text-indigo-50 ${
-                  currentPath === '/app/models'
+                  currentPath === '/prod/models'
                     ? 'drop-shadow-xl font-bold text-indigo-200'
                     : ''
                 } hover:text-indigo-200 duration-300`}
@@ -66,9 +66,9 @@ const Navbar = () => {
                 Models
               </Link>
               <Link
-                to="/app/forecasts"
+                to="/prod/forecasts"
                 className={`tracking-tighter font-heebo py-4 px-2 text-indigo-50 ${
-                  currentPath === '/app/forecasts'
+                  currentPath === '/prod/forecasts'
                     ? 'drop-shadow-xl font-bold text-indigo-200'
                     : ''
                 } hover:text-indigo-200 duration-300`}
@@ -76,24 +76,24 @@ const Navbar = () => {
                 Forecasts
               </Link>
               <Link
-                to="/app/documentation"
+                to="/prod/analytics"
                 className={`tracking-tighter font-heebo py-4 px-2 text-indigo-50 ${
-                  currentPath === '/app/documentation'
+                  currentPath === '/prod/analytics'
+                    ? 'drop-shadow-xl font-bold text-indigo-200'
+                    : ''
+                } hover:text-indigo-200 duration-300`}
+              >
+                Analytics
+              </Link>
+              <Link
+                to="/prod/documentation"
+                className={`tracking-tighter font-heebo py-4 px-2 text-indigo-50 ${
+                  currentPath === '/prod/documentation'
                     ? 'drop-shadow-xl font-bold text-indigo-200'
                     : ''
                 } hover:text-indigo-200 duration-300`}
               >
                 Documentation
-              </Link>
-              <Link
-                to="/app/integrations"
-                className={`tracking-tighter font-heebo py-4 px-2 text-indigo-50 ${
-                  currentPath === '/app/integrations'
-                    ? 'drop-shadow-xl font-bold text-indigo-200'
-                    : ''
-                } hover:text-indigo-200 duration-300`}
-              >
-                Integrations
               </Link>
             </div>
           </div>
@@ -148,39 +148,39 @@ const Navbar = () => {
       >
         {' '}
         <Link
-          to="/app/dashboard"
+          to="/prod/dashboard"
           className="block font-heebo py-4 px-2 text-indigo-50 hover:text-indigo-300 transition duration-300"
           onClick={toggleMobileNavbar}
         >
           Dashboard
         </Link>
         <Link
-          to="/app/models"
+          to="/prod/models"
           className="block font-heebo py-4 px-2 text-indigo-50 hover:text-indigo-300 transition duration-300"
           onClick={toggleMobileNavbar}
         >
           Models
         </Link>
         <Link
-          to="/app/forecasts"
+          to="/prod/forecasts"
           className="block font-heebo py-4 px-2 text-indigo-50 hover:text-indigo-300 transition duration-300"
           onClick={toggleMobileNavbar}
         >
           Forecasts
         </Link>
         <Link
-          to="/app/documentation"
+          to="/prod/analytics"
+          className="block font-heebo py-4 px-2 text-indigo-50 hover:text-indigo-300 transition duration-300"
+          onClick={toggleMobileNavbar}
+        >
+          Analytics
+        </Link>
+        <Link
+          to="/prod/documentation"
           className="block font-heebo py-4 px-2 text-indigo-50 hover:text-indigo-300 transition duration-300"
           onClick={toggleMobileNavbar}
         >
           Documentation
-        </Link>
-        <Link
-          to="/app/integrations"
-          className="block font-heebo py-4 px-2 text-indigo-50 hover:text-indigo-300 transition duration-300"
-          onClick={toggleMobileNavbar}
-        >
-          Integrations
         </Link>
         <Link
           to="/"

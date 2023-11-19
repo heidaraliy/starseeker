@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import logo from '../assets/datagaze_mono.png';
-import colored_logo from '../assets/datagaze_color.png';
+import logo from '../assets/starsphere_mono.png';
+import colored_logo from '../assets/starsphere_color.png';
 import mono_sign_in from '../assets/datagaze_sign_in_mono.png';
 import colored_sign_in from '../assets/datagaze_sign_in_background.png';
 
@@ -17,7 +17,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="shadow-xl bg-gradient-to-r from-neutral-900 to-neutral-400 fixed w-screen z-50">
+    <nav className="shadow-xl bg-gradient-to-r from-neutral-500 to-neutral-900 fixed w-screen z-50">
       <div>
         <div className="flex justify-between px-4">
           <div className="flex">
@@ -65,6 +65,16 @@ const Navbar = () => {
                 Solutions
               </Link>
               <Link
+                to="/integrations"
+                className={`tracking-tighter font-heebo py-4 px-2 text-neutral-50  ${
+                  currentPath === '/integrations'
+                    ? 'drop-shadow-xl font-bold text-neutral-300'
+                    : ''
+                } hover:text-neutral-300 duration-300`}
+              >
+                Integrations
+              </Link>
+              <Link
                 to="/privacy"
                 className={`tracking-tighter font-heebo py-4 px-2 text-neutral-50  ${
                   currentPath === '/privacy'
@@ -88,7 +98,7 @@ const Navbar = () => {
           </div>
           {/* sign in */}
           <div className="hidden lg:flex items-center">
-            <Link to="/app/dashboard">
+            <Link to="/prod/dashboard">
               <img
                 src={mono_sign_in}
                 style={{ opacity: isSignInHovered ? 0 : 1 }}
@@ -139,30 +149,42 @@ const Navbar = () => {
         <Link
           to="/products"
           className="tracking-tighter block font-heebo py-4 px-2 text-white hover:text-neutral-300 transition duration-300"
+          onClick={toggleMobileNavbar}
         >
           Products
         </Link>
         <Link
           to="/solutions"
           className="tracking-tighter block font-heebo py-4 px-2 text-white hover:text-neutral-300 transition duration-300"
+          onClick={toggleMobileNavbar}
         >
           Solutions
         </Link>
         <Link
+          to="/integrations"
+          className="tracking-tighter block font-heebo py-4 px-2 text-white hover:text-neutral-300 transition duration-300"
+          onClick={toggleMobileNavbar}
+        >
+          Integrations
+        </Link>
+        <Link
           to="/privacy"
           className="tracking-tighter block font-heebo py-4 px-2 text-white hover:text-neutral-300 transition duration-300"
+          onClick={toggleMobileNavbar}
         >
           Privacy
         </Link>
         <Link
           to="/contact_us"
           className="tracking-tighter block font-heebo py-4 px-2 text-white hover:text-neutral-300 transition duration-300"
+          onClick={toggleMobileNavbar}
         >
           Contact Us
         </Link>
         <Link
-          to="/app/dashboard"
+          to="/prod/dashboard"
           className="block tracking-tighter text-center items-center font-heebo font-bold w-28 py-0.5 my-4 mt-2 text-slate-700 bg-indigo-50 border-2 border-slate-400 rounded"
+          onClick={toggleMobileNavbar}
         >
           Sign In
         </Link>

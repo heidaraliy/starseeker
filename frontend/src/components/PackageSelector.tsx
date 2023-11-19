@@ -43,15 +43,15 @@ const PackageSelector = () => {
   return (
     <div>
       <div>
-        <div className="flex flex-row justify-center items-center h-[16rem] m-2 mx-6 border-2 border-black bg-stone-200 divide-x-[0.1rem] divide-black">
+        <div className="flex flex-row justify-center items-center h-[16rem] m-2 mx-6 border-2 border-black bg-neutral-100 divide-x-[0.1rem] divide-black">
           <div className="flex flex-col w-1/2 h-full justify-start overflow-auto">
-            <h2 className="text-center tracking-tighter font-heebo py-1 lg:text-base text-sm font-bold bg-stone-300 mb-2 border-b-[0.1rem] border-black">
+            <h2 className="text-center tracking-tighter font-heebo py-1 lg:text-base text-sm font-bold bg-neutral-300 mb-2 border-b-[0.1rem] border-black">
               Available Packages
             </h2>
             {availablePackages.map((pkg) => (
               <div key={pkg} className="flex mb-1 mx-4 border-2 border-black">
                 <button
-                  className="flex-grow h-6 text-slate-900 tracking-tighter font-JetBrains text-sm bg-stone-50 hover:bg-stone-100 focus:outline-none duration-300 transition ease-in-out"
+                  className="flex-grow h-6 text-slate-900 tracking-tighter font-heebo text-sm bg-neutral-50 hover:bg-neutral-200 focus:outline-none duration-300 transition ease-in-out"
                   onClick={() => addPackage(pkg)}
                   onMouseEnter={() => handleMouseEnter(pkg)}
                   onMouseLeave={handleMouseLeave}
@@ -59,7 +59,7 @@ const PackageSelector = () => {
                   {pkg}
                 </button>
                 <button
-                  className="flex h-6 text-slate-900 tracking-tighter font-JetBrains bg-gray-400 hover:bg-gray-500 focus:outline-none duration-200 transition ease-in-out"
+                  className="flex h-6 text-slate-900 tracking-tighter font-heebo bg-neutral-400 hover:bg-neutral-500 focus:outline-none duration-200 transition ease-in-out"
                   onClick={() => addPackage(pkg)}
                   onMouseEnter={() => handleMouseEnter(pkg)}
                   onMouseLeave={handleMouseLeave}
@@ -71,19 +71,19 @@ const PackageSelector = () => {
           </div>
 
           <div className="flex flex-col w-1/2 h-full justify-start overflow-auto">
-            <h2 className="text-center tracking-tighter font-heebo py-1 lg:text-base text-sm font-bold bg-stone-300 mb-2 border-b-[0.1rem] border-black">
+            <h2 className="text-center tracking-tighter font-heebo py-1 lg:text-base text-sm font-bold bg-neutral-300 mb-2 border-b-[0.1rem] border-black">
               Selected Packages
             </h2>
             {selectedPackages.map((pkg) => (
               <div key={pkg} className="flex mb-1 mx-4 border-2 border-black">
                 <button
-                  className="h-6 text-slate-900 font-JetBrains tracking-tighter bg-gray-400 hover:bg-gray-500 focus:outline-none duration-200 transition ease-in-out"
+                  className="h-6 text-slate-900 font-heebo tracking-tighter bg-neutral-400 hover:bg-neutral-500 focus:outline-none duration-200 transition ease-in-out"
                   onClick={() => removePackage(pkg)}
                 >
                   <span className="material-symbols-outlined">arrow_left</span>
                 </button>
                 <button
-                  className="flex-grow h-6 text-slate-900 font-JetBrains tracking-tighter text-sm bg-stone-50 hover:bg-stone-100 focus:outline-none duration-200 transition ease-in-out"
+                  className="flex-grow h-6 text-slate-900 font-heebo tracking-tighter text-sm bg-neutral-50 hover:bg-neutral-200 focus:outline-none duration-200 transition ease-in-out"
                   onClick={() => removePackage(pkg)}
                 >
                   {pkg}
@@ -93,7 +93,7 @@ const PackageSelector = () => {
           </div>
         </div>
       </div>
-      <div className="font-heebo tracking-tighter flex flex-col bg-stone-100 mx-auto -mt-2.5 p-2 border-2 border-black md:w-[38rem] xl:w-[32rem] 2xl:w-[40rem] h-[6rem] shadow-lg">
+      <div className="font-heebo tracking-tighter flex flex-col bg-neutral-200 mx-auto -mt-2.5 p-2 border-2 border-black md:w-[38rem] xl:w-[32rem] 2xl:w-[40rem] h-[6rem] shadow-lg">
         {hoveredPackage.name ? (
           <Tooltip message={hoveredPackage.description} position="dropdown">
             <div>

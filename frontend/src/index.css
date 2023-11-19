@@ -22,53 +22,17 @@
   }
 }
 
-@keyframes starFlyby {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-@layer components {
-  .bg-custom-image {
-    background-image: url('/frontend/src/assets/datagaze_log_in_background.png');
-  }
-}
-
-.hover:bg-custom-image:hover {
-  background-image: url('/frontend/src/assets/datagaze_log_in_background.png');
-  background-size: cover; /* Cover the entire button area */
-  background-position: center; /* Center the background image */
-}
-
-.bg-custom-image {
-  background-image: url('/frontend/src/assets/datagaze_log_in_background.png'); /* Updated path */
-  background-size: cover;
-  background-position: center;
-}
-
-.logo-container:hover .logo-monochrome {
-  opacity: 0;
-}
-
-.logo-container:hover .logo-colored {
-  display: block;
-  opacity: 1;
-}
-
-.stars {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 200%;
-  height: 100%;
-  background: url('path-to-stars-image.png') repeat;
-  animation: flyby 10s linear infinite;
-}
-
 .nav-animate {
   transition: max-height 0.5s ease-in-out, opacity 0.9s ease-in-out;
   overflow: hidden;
+}
+
+.matrix {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-color: #03001c;
 }

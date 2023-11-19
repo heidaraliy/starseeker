@@ -7,7 +7,7 @@ const ModelsPage = () => {
             Models
           </h1>
           <div className="flex flex-col justify-center p-4">
-            <div className="font-heebo font-light mb-4 md:text-xl text-xl bg-gray-800 text-transparent bg-clip-text tracking-tighter">
+            <div className="font-heebo font-light mb-4 md:text-xl text-xl bg-neutral-800 text-transparent bg-clip-text tracking-tighter">
               View and modify your models.
             </div>
           </div>

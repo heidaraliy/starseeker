@@ -17,7 +17,7 @@ const AppSidebar = () => {
     <div className="z-50">
       {/* sidebar */}
       <div
-        className={`fixed left-2 md:left-0 md:h-[25.5rem] md:w-40 w-52 z-100 tracking-tighter drop-shadow-2xl border-2 border-gray-300 bg-indigo-50 rounded-br-md transform transition-transform duration-500 ${
+        className={`fixed left-2 md:left-0 md:h-[25.5rem] md:w-40 w-52 z-100 tracking-tighter drop-shadow-2xl border-2 border-neutral-300 bg-indigo-50 rounded-br-md transform transition-transform duration-500 ${
           isSidebarOpen
             ? '-translate-x-6'
             : 'md:-translate-x-[8.2rem] -translate-x-[12.1rem]'
@@ -42,7 +42,7 @@ const AppSidebar = () => {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-1 mr-3 my-2 p-2 z-100">
           {/* icon 1 */}
-          <Link to="app/gaze/model_creator">
+          <Link to="/prod/gaze/model_creator">
             <Icon title="Gaze" onClick={toggleSidebar} img={modulo_explore} />
           </Link>
           {/* icon 2 */}

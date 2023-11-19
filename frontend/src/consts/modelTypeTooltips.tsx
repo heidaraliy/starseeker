@@ -23,7 +23,7 @@ export const modelTypeTooltips = {
       spikes.
     </div>
   ),
-  xgboost: (
+  XGBoost: (
     <div>
       {/* Add icon for xgboost */}
       XGBoost is a modern way of making predictions using complex data. It's

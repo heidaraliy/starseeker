@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Tooltip from './Tooltip';
 
 interface DropdownProps {
@@ -52,11 +52,31 @@ const Dropdown: React.FC<DropdownProps> = ({
     onSelect(option);
   };
 
+  // dropdown direction logic -- keeps pages clean!
+  const [openUp, setOpenUp] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const updateDropdownDirection = () => {
+      if (dropdownRef.current) {
+        const rect = dropdownRef.current.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        setOpenUp(spaceBelow < 250);
+      }
+    };
+    updateDropdownDirection();
+    window.addEventListener('resize', updateDropdownDirection);
+
+    // Cleanup event listener
+    return () => window.removeEventListener('resize', updateDropdownDirection);
+  }, []);
+
   return (
-    <div className="relative m-2 mx-6">
+    <div className="relative m-3 mx-6">
       <div
         onClick={toggleDropdown}
-        className="cursor-pointer bg-stone-200 hover:bg-stone-300 border-2 border-black font-JetBrains tracking-tighter text-sm drop-shadow-lg p-2 flex justify-between items-center h-8 hover:drop-shadow-xl duration-200 ease-in-out transition"
+        className="cursor-pointer bg-neutral-200 hover:bg-neutral-300 border-2 border-black font-heebo tracking-tighter text-sm drop-shadow-lg p-2 flex justify-between items-center h-8 hover:drop-shadow-xl duration-200 ease-in-out transition"
+        ref={dropdownRef}
       >
         <span className="flex flex-row">
           {currentSelection ? (
@@ -78,7 +98,13 @@ const Dropdown: React.FC<DropdownProps> = ({
         <span className="ml-2">{isOpen ? '▲' : '▼'}</span>
       </div>
       {isOpen && (
-        <div className="z-40 absolute top-[1.87rem] left-0 bg-white border-2 border-black shadow-lg w-[20rem]">
+        <div
+          className={`z-40 absolute ${
+            openUp
+              ? 'bottom-[4.1rem] md:left-[18.74rem] 2xl:left-[20.75rem] xl:left-[12.74rem]'
+              : 'top-[1.87rem]'
+          } left-0 bg-neutral-50 border-2 border-black shadow-2xl w-[20rem]`}
+        >
           <ul className="max-h-[13.9rem] relative">
             {currentOptions.map((option, index) => (
               <Tooltip
@@ -89,14 +115,14 @@ const Dropdown: React.FC<DropdownProps> = ({
                 <li
                   key={index}
                   onClick={() => handleOptionClick(option)}
-                  className="cursor-pointer hover:bg-gray-100 p-2 font-JetBrains text-sm flex justify-between items-center"
+                  className="cursor-pointer hover:bg-neutral-100 p-2 font-heebo text-sm flex justify-between items-center"
                 >
                   <span className="flex-1">{option}</span>
                 </li>
               </Tooltip>
             ))}
             {options.length > 5 && (
-              <div className="absolute -inset-x-0.5 -bottom-8.9 flex justify-between items-center px-2 bg-stone-200 border-black border-2">
+              <div className="absolute -inset-x-0.5 -bottom-8.9 flex justify-between items-center px-2 bg-neutral-200 border-black border-2">
                 <button
                   onClick={goToPrevPage}
                   disabled={currentPage === 1}
@@ -110,7 +136,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                     arrow_left
                   </span>
                 </button>
-                <span className="font-JetBrains">
+                <span className="font-heebo text-sm">
                   Page {currentPage} of {totalPages}
                 </span>
                 <button

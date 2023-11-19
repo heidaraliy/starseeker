@@ -9,7 +9,7 @@ const UserDashboardPage = () => {
             Create
           </h1>
           <div className="flex flex-col justify-center p-4">
-            <p className="font-heebo font-light md:text-xl text-xl bg-gray-800 text-transparent bg-clip-text tracking-tighter">
+            <p className="font-heebo font-light md:text-xl text-xl bg-neutral-800 text-transparent bg-clip-text tracking-tighter">
               Create new forecasts, visualizations, and reports at the click of
               a button.
             </p>
@@ -21,7 +21,7 @@ const UserDashboardPage = () => {
             Snapshots
           </h1>
           <div className="flex flex-col justify-center p-4">
-            <p className="font-heebo font-light mb-4 md:text-xl text-xl bg-gray-800 text-transparent bg-clip-text tracking-tighter">
+            <p className="font-heebo font-light mb-4 md:text-xl text-xl bg-neutral-800 text-transparent bg-clip-text tracking-tighter">
               Your data at a glance. Set and adjust your most vital insights.
             </p>
           </div>
