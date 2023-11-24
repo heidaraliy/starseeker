@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import logo from '../assets/starsphere_mono.png';
-import colored_logo from '../assets/starsphere_color.png';
-import mono_sign_in from '../assets/datagaze_sign_in_mono.png';
-import colored_sign_in from '../assets/datagaze_sign_in_background.png';
+import logo from '../assets/starseeker_mono.png';
+import colored_logo from '../assets/starseeker_color.png';
+import mono_sign_in from '../assets/sign_in_mono.png';
+import colored_sign_in from '../assets/sign_in_color.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -105,7 +105,7 @@ const Navbar = () => {
                 onMouseEnter={() => setIsSignInHovered(true)}
                 onMouseLeave={() => setIsSignInHovered(false)}
                 alt="Modulo Logo"
-                className="relative border-2 border-neutral-900 rounded-sm w-28 drop-shadow-lg transition-all hover:drop-shadow-2xl active:translate-y-0.5 duration-300"
+                className="relative w-36 drop-shadow-lg transition-all hover:drop-shadow-2xl active:translate-y-0.5 duration-300"
               />
               <img
                 src={colored_sign_in}
@@ -113,7 +113,7 @@ const Navbar = () => {
                 onMouseEnter={() => setIsSignInHovered(true)}
                 onMouseLeave={() => setIsSignInHovered(false)}
                 alt="Modulo Logo"
-                className="absolute top-[1.05rem] border-2 border-indigo-950 rounded-sm w-28 drop-shadow-lg transition-all hover:drop-shadow-2xl active:translate-y-0.5 duration-300"
+                className="absolute top-[1.04rem] w-36 drop-shadow-lg transition-all hover:drop-shadow-2xl active:translate-y-0.5 duration-300"
               />
             </Link>
           </div>

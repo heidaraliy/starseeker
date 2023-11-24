@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react';
 
-interface IconProps {
+interface SidebarIconProps {
   img: string;
   title: ReactNode;
   onClick: () => void;
 }
 
-const Icon: React.FC<IconProps> = ({ title, onClick, img }) => {
+const SidebarIcon: React.FC<SidebarIconProps> = ({ title, onClick, img }) => {
   return (
     <div
       className="flex flex-col justify-center rounded-full md:w-36 hover:-translate-y-0.5 hover:drop-shadow-lg active:translate-y-0 duration-200"
@@ -23,4 +23,4 @@ const Icon: React.FC<IconProps> = ({ title, onClick, img }) => {
   );
 };
 
-export default Icon;
+export default SidebarIcon;

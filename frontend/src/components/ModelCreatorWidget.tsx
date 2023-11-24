@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import google_refresh from '../assets/google_refresh.svg';
 import google_question_mark from '../assets/google_question_mark.svg';
-import Dropdown from './Dropdown';
+import ModelCreatorDropdown from './ModelCreatorDropdown';
 import PackageSelector from './PackageSelector';
 import Tooltip from './Tooltip';
 import { forecastTypeOptions, forecastToIcon } from '../consts/forecastTypes';
@@ -93,7 +93,7 @@ const ModelCreatorWidget: React.FC = () => {
           <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
             Select forecast type:
           </div>
-          <Dropdown
+          <ModelCreatorDropdown
             iconPlaceholder={google_question_mark}
             iconImage={forecastToIcon[selectedForecast] || google_question_mark}
             options={forecastTypeOptions}
@@ -106,7 +106,7 @@ const ModelCreatorWidget: React.FC = () => {
           <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
             Select model language:
           </div>
-          <Dropdown
+          <ModelCreatorDropdown
             iconPlaceholder={google_question_mark}
             iconImage={languageToIcon[selectedLanguage] || google_question_mark}
             options={programmingLanguageOptions}
@@ -123,7 +123,7 @@ const ModelCreatorWidget: React.FC = () => {
           <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
             Select model type:
           </div>
-          <Dropdown
+          <ModelCreatorDropdown
             iconPlaceholder={google_question_mark}
             iconImage={modelToIcon[selectedModel] || google_question_mark}
             options={modelTypeOptions}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Icon from './Icon';
+import SidebarIcon from './SidebarIcon';
 import modulo_explore from '../assets/datagaze_gaze_icon.png';
 import modulo_usage from '../assets/datagaze_usage_icon.png';
 import modulo_user from '../assets/datagaze_user_icon.png';
@@ -43,14 +43,22 @@ const AppSidebar = () => {
         <div className="grid grid-cols-2 md:grid-cols-1 mr-3 my-2 p-2 z-100">
           {/* icon 1 */}
           <Link to="/prod/gaze/model_creator">
-            <Icon title="Gaze" onClick={toggleSidebar} img={modulo_explore} />
+            <SidebarIcon
+              title="Gaze"
+              onClick={toggleSidebar}
+              img={modulo_explore}
+            />
           </Link>
           {/* icon 2 */}
-          <Icon title="Usage" onClick={toggleSidebar} img={modulo_usage} />
+          <SidebarIcon
+            title="Usage"
+            onClick={toggleSidebar}
+            img={modulo_usage}
+          />
           {/* icon 3 */}
-          <Icon title="User" onClick={toggleSidebar} img={modulo_user} />
+          <SidebarIcon title="User" onClick={toggleSidebar} img={modulo_user} />
           {/* icon 4 */}
-          <Icon
+          <SidebarIcon
             title="Settings"
             onClick={toggleSidebar}
             img={modulo_settings}

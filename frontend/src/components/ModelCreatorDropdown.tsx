@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Tooltip from './Tooltip';
 
-interface DropdownProps {
+interface ModelCreatorDropdownProps {
   iconImage: Partial<string>;
   iconPlaceholder: Partial<string>;
   options: string[];
@@ -12,7 +12,7 @@ interface DropdownProps {
   getTooltipMessage: (option: string, type: string) => string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({
+const ModelCreatorDropdown: React.FC<ModelCreatorDropdownProps> = ({
   iconPlaceholder,
   iconImage,
   options,
@@ -161,4 +161,4 @@ const Dropdown: React.FC<DropdownProps> = ({
   );
 };
 
-export default Dropdown;
+export default ModelCreatorDropdown;

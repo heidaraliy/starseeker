@@ -1,15 +1,13 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import logo from '../assets/starsphere_color_hover.png';
-import colored_logo from '../assets/starsphere_color.png';
-import colored_sign_out from '../assets/datagaze_sign_out_background.png';
-import mono_sign_out from '../assets/datagaze_sign_out_mono.png';
+import logo from '../assets/starseeker_hover.png';
+import colored_logo from '../assets/starseeker_color.png';
+import colored_sign_out from '../assets/sign_out_color.png';
 import AppSidebar from './AppSidebar';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [isSignOutHovered, setIsSignOutHovered] = useState(false);
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -30,7 +28,7 @@ const Navbar = () => {
                   style={{ opacity: isHovered ? 1 : 0 }}
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
-                  alt="Modulo Logo"
+                  alt="Starseeker Logo"
                   className="relative -mt-0.5 w-52 py-2 drop-shadow-lg transition-all hover:drop-shadow-xl active:translate-y-0.5 duration-300"
                 />
                 <img
@@ -38,7 +36,7 @@ const Navbar = () => {
                   style={{ opacity: isHovered ? 0 : 1 }}
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
-                  alt="Modulo Logo"
+                  alt="Starseeker Logo"
                   className="absolute -mt-0.5 top-0 w-52 py-2 drop-shadow-lg transition-all hover:drop-shadow-xl active:translate-y-0.5 duration-300"
                 />
               </Link>
@@ -101,20 +99,9 @@ const Navbar = () => {
           <div className="hidden lg:flex items-center">
             <Link to="/">
               <img
-                src={mono_sign_out}
-                style={{ opacity: isSignOutHovered ? 1 : 0 }}
-                onMouseEnter={() => setIsSignOutHovered(true)}
-                onMouseLeave={() => setIsSignOutHovered(false)}
-                alt="Modulo Logo"
-                className="relative border-2 border-neutral-800 rounded-sm w-28 drop-shadow-lg transition-all hover:drop-shadow-2xl active:translate-y-0.5 duration-300"
-              />
-              <img
                 src={colored_sign_out}
-                style={{ opacity: isSignOutHovered ? 0 : 1 }}
-                onMouseEnter={() => setIsSignOutHovered(true)}
-                onMouseLeave={() => setIsSignOutHovered(false)}
                 alt="Modulo Logo"
-                className="absolute top-[1.05rem] border-2 border-indigo-950 rounded-sm w-28 drop-shadow-lg transition-all hover:drop-shadow-2xl active:translate-y-0.5 duration-300"
+                className="w-36 drop-shadow-lg transition-all hover:drop-shadow-xl hover:-translate-y-0.5 duration-300"
               />
             </Link>
           </div>
