@@ -10,6 +10,7 @@ import {
   programmingLanguageOptions,
   languageToIcon,
 } from '../consts/languageTypes';
+import languagePackageMap from '../consts/languagePackageMap';
 import { getTooltipMessage } from '../utils/getTooltipMessage';
 import axios from 'axios';
 
@@ -17,11 +18,19 @@ const ModelCreatorWidget: React.FC = () => {
   //set key for packageSelectorKey so we can refresh it to default when a user clicks the refresh button
   const [packageSelectorKey, setPackageSelectorKey] = useState(0);
 
+  //conditional rendering logic
+  const getPackagesByLanguage = (selectedLanguage) => {
+    return languagePackageMap[selectedLanguage] || [];
+  };
+
+  const getModelsByPackage = (selectedPackage) => {};
+
   //programming language selection consts, states, and handling
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>('');
 
   const handleLanguageSelect = (language: string) => {
     setSelectedLanguage(language);
+    const availablePackages = getPackagesByLanguage(language);
   };
 
   //forecast type selection consts, states, and handling
@@ -50,8 +59,8 @@ const ModelCreatorWidget: React.FC = () => {
   const handleProcessModel = async () => {
     try {
       const dataToSend = {
-        forecastType: selectedLanguage,
-        language: selectedForecast,
+        forecastType: selectedForecast,
+        language: selectedLanguage,
         selectedModel: selectedModel,
       };
 
@@ -91,14 +100,14 @@ const ModelCreatorWidget: React.FC = () => {
             </Tooltip>
           </div>
           <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
-            Select forecast type:
+            Select forecast data type:
           </div>
           <ModelCreatorDropdown
             iconPlaceholder={google_question_mark}
             iconImage={forecastToIcon[selectedForecast] || google_question_mark}
             options={forecastTypeOptions}
             onSelect={handleForecastSelect}
-            placeholder="Select a forecast type."
+            placeholder="Select a forecast data type."
             currentSelection={selectedForecast || ''}
             tooltipType="forecastType"
             getTooltipMessage={getTooltipMessage}
@@ -119,7 +128,10 @@ const ModelCreatorWidget: React.FC = () => {
           <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
             Select packages:
           </div>
-          <PackageSelector key={packageSelectorKey} />
+          <PackageSelector
+            key={packageSelectorKey}
+            selectedLanguage={selectedLanguage}
+          />
           <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
             Select model type:
           </div>

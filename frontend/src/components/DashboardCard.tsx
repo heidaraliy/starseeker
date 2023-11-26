@@ -1,13 +1,18 @@
 import React, { ReactNode } from 'react';
 
-interface CardProps {
+interface DashboardCardProps {
   img: string;
   title: ReactNode;
   description: ReactNode;
   onClick: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ title, description, onClick, img }) => {
+const DashboardCard: React.FC<DashboardCardProps> = ({
+  title,
+  description,
+  onClick,
+  img,
+}) => {
   return (
     <div
       className="lg:h-28 h-20 max-w-xl bg-indigo-50 border-2 border-neutral-400 flex flex-row mx-0 lg:mx-2 my-1 rounded-sm shadow-md hover:drop-shadow-lg hover:-translate-y-0.5 hover:bg-indigo-100 cursor-pointer active:translate-y-0.5 duration-200 ease-in-out"
@@ -26,4 +31,4 @@ const Card: React.FC<CardProps> = ({ title, description, onClick, img }) => {
   );
 };
 
-export default Card;
+export default DashboardCard;

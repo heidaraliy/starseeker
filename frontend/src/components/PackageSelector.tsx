@@ -1,17 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Tooltip from './Tooltip';
+import languagePackageMap from '../consts/languagePackageMap';
 import { packageTooltips, placeholderText } from '../consts/packageTooltips';
 
-const PackageSelector = () => {
-  const [availablePackages, setAvailablePackages] = useState([
-    'Optuna',
-    'scikit-learn',
-    'Keras',
-    'TensorFlow',
-    'tidymodels',
-    'statsmodels',
-  ]);
+const PackageSelector = ({ selectedLanguage }) => {
+  const [availablePackages, setAvailablePackages] = useState([]);
   const [selectedPackages, setSelectedPackages] = useState([]);
+
+  useEffect(() => {
+    // Set the available packages based on the selected language
+    if (selectedLanguage && languagePackageMap[selectedLanguage]) {
+      setAvailablePackages(languagePackageMap[selectedLanguage]);
+    } else {
+      // If no language is selected or it doesn't exist in the map, set an empty array or a default list
+      setAvailablePackages([]);
+    }
+  }, [selectedLanguage]);
 
   const [hoveredPackage, setHoveredPackage] = useState({
     name: '',
@@ -97,20 +101,20 @@ const PackageSelector = () => {
         {hoveredPackage.name ? (
           <Tooltip message={hoveredPackage.description} position="dropdown">
             <div>
-              <span className="flex text-lg drop-shadow-md">
+              <span className="flex text-base drop-shadow-md">
                 {hoveredPackage.name}
               </span>
-              <span className="font-light text-base">
+              <span className="font-light text-sm">
                 {hoveredPackage.description}
               </span>
             </div>
           </Tooltip>
         ) : (
           <div>
-            <span className="flex text-lg drop-shadow-md">
+            <span className="flex text-base drop-shadow-md">
               Package Selector
             </span>
-            <span className="font-light text-base">{placeholderText}</span>
+            <span className="font-light text-sm">{placeholderText}</span>
           </div>
         )}
       </div>
