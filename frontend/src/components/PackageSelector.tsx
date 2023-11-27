@@ -3,7 +3,7 @@ import Tooltip from './Tooltip';
 import languagePackageMap from '../consts/languagePackageMap';
 import { packageTooltips, placeholderText } from '../consts/packageTooltips';
 
-const PackageSelector = ({ selectedLanguage }) => {
+const PackageSelector = ({ selectedLanguage, onPackageSelect }) => {
   const [availablePackages, setAvailablePackages] = useState([]);
   const [selectedPackages, setSelectedPackages] = useState([]);
 
@@ -23,7 +23,11 @@ const PackageSelector = ({ selectedLanguage }) => {
   });
 
   const addPackage = (pkg) => {
-    setSelectedPackages((currentSelected) => [...currentSelected, pkg]);
+    setSelectedPackages((currentSelected) => {
+      const newSelected = [...currentSelected, pkg];
+      onPackageSelect(newSelected);
+      return newSelected;
+    });
     setAvailablePackages((currentAvailable) =>
       currentAvailable.filter((p) => p !== pkg)
     );
@@ -31,9 +35,11 @@ const PackageSelector = ({ selectedLanguage }) => {
 
   const removePackage = (pkg) => {
     setAvailablePackages((currentAvailable) => [...currentAvailable, pkg]);
-    setSelectedPackages((currentSelected) =>
-      currentSelected.filter((p) => p !== pkg)
-    );
+    setSelectedPackages((currentSelected) => {
+      const newSelected = currentSelected.filter((p) => p !== pkg);
+      onPackageSelect(newSelected);
+      return newSelected;
+    });
   };
 
   const handleMouseEnter = (pkg) => {
@@ -53,7 +59,7 @@ const PackageSelector = ({ selectedLanguage }) => {
               Available Packages
             </h2>
             {availablePackages.map((pkg) => (
-              <div key={pkg} className="flex mb-1 mx-4 border-2 border-black">
+              <div key={pkg} className="flex mb-1 mx-4 border-2 border-black ">
                 <button
                   className="flex-grow h-6 text-slate-900 tracking-tighter font-heebo text-sm bg-neutral-50 hover:bg-neutral-200 focus:outline-none duration-300 transition ease-in-out"
                   onClick={() => addPackage(pkg)}

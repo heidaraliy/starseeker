@@ -121,7 +121,7 @@ const ModelCreatorDropdown: React.FC<ModelCreatorDropdownProps> = ({
                 </li>
               </Tooltip>
             ))}
-            {options.length > 5 && (
+            {options.length > 0 && (
               <div className="absolute -inset-x-0.5 -bottom-8.9 flex justify-between items-center px-2 bg-neutral-200 border-black border-2">
                 <button
                   onClick={goToPrevPage}

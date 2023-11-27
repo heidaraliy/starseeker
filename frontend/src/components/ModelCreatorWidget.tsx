@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import google_refresh from '../assets/google_refresh.svg';
 import google_question_mark from '../assets/google_question_mark.svg';
 import ModelCreatorDropdown from './ModelCreatorDropdown';
 import PackageSelector from './PackageSelector';
 import Tooltip from './Tooltip';
 import { forecastTypeOptions, forecastToIcon } from '../consts/forecastTypes';
-import { modelTypeOptions, modelToIcon } from '../consts/modelTypes';
+import {
+  packageToModelsMap,
+  modelTypeOptions,
+  modelToIcon,
+} from '../consts/modelTypes';
 import {
   programmingLanguageOptions,
   languageToIcon,
@@ -18,26 +22,50 @@ const ModelCreatorWidget: React.FC = () => {
   //set key for packageSelectorKey so we can refresh it to default when a user clicks the refresh button
   const [packageSelectorKey, setPackageSelectorKey] = useState(0);
 
-  //conditional rendering logic
+  //conditional package rendering logic
   const getPackagesByLanguage = (selectedLanguage) => {
     return languagePackageMap[selectedLanguage] || [];
   };
 
-  const getModelsByPackage = (selectedPackage) => {};
+  //also need to process package selection to render available models
+  const [selectedPackages, setSelectedPackages] = useState([]);
+  const [filteredModelOptions, setFilteredModelOptions] = useState([]);
 
-  //programming language selection consts, states, and handling
-  const [selectedLanguage, setSelectedLanguage] = useState<string | null>('');
-
-  const handleLanguageSelect = (language: string) => {
-    setSelectedLanguage(language);
-    const availablePackages = getPackagesByLanguage(language);
+  const handlePackageSelect = (selectedPackages) => {
+    setSelectedPackages(selectedPackages);
   };
+
+  useEffect(() => {
+    console.log('Selected packages:', selectedPackages);
+
+    if (selectedPackages.length > 0) {
+      let modelsSet = new Set();
+      selectedPackages.forEach((pkg) => {
+        const modelsForPackage = packageToModelsMap[pkg] || [];
+        modelsForPackage.forEach((model) => modelsSet.add(model));
+      });
+
+      console.log('Models set:', modelsSet); // Debugging
+      setFilteredModelOptions([...modelsSet]);
+    } else {
+      setFilteredModelOptions(modelTypeOptions);
+    }
+  }, [selectedPackages]);
 
   //forecast type selection consts, states, and handling
   const [selectedForecast, setSelectedForecast] = useState<string | null>('');
 
   const handleForecastSelect = (forecast: string) => {
     setSelectedForecast(forecast);
+  };
+
+  //programming language selection consts, states, and handling
+  const [selectedLanguage, setSelectedLanguage] = useState<string | null>('');
+
+  const handleLanguageSelect = (language: string) => {
+    setSelectedLanguage(language);
+    setSelectedPackages([]);
+    setSelectedModel('');
   };
 
   //model type selection consts, states, and handling
@@ -128,17 +156,26 @@ const ModelCreatorWidget: React.FC = () => {
           <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
             Select packages:
           </div>
-          <PackageSelector
-            key={packageSelectorKey}
-            selectedLanguage={selectedLanguage}
-          />
+          <div
+            className="package-selector-container"
+            style={{ position: 'relative' }}
+          >
+            {(!selectedForecast || !selectedLanguage) && (
+              <div className="package-selector-overlay"></div>
+            )}
+            <PackageSelector
+              key={packageSelectorKey}
+              selectedLanguage={selectedLanguage}
+              onPackageSelect={handlePackageSelect}
+            />
+          </div>
           <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
             Select model type:
           </div>
           <ModelCreatorDropdown
             iconPlaceholder={google_question_mark}
             iconImage={modelToIcon[selectedModel] || google_question_mark}
-            options={modelTypeOptions}
+            options={filteredModelOptions}
             onSelect={handleModelSelect}
             placeholder="Select a model type."
             currentSelection={selectedModel || ''}

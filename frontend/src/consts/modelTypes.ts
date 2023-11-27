@@ -13,6 +13,44 @@ import google_paw from '../assets/google_paw.svg';
 import google_weight from '../assets/google_weight.svg';
 import google_rocket from '../assets/google_rocket.svg';
 
+//for when you implement R scripts -- update R packages here, no need to split them!
+export const packageToModelsMap = {
+  statsmodels: [
+    'ARIMA',
+    'SARIMA',
+    'Vector Autoregression',
+    'ETS (Error, Trend, Seasonal)',
+    'Linear Regression',
+  ],
+  'scikit-learn': [
+    'Linear Regression',
+    'AdaBoost',
+    'Random Forest',
+    'Decision Tree',
+    'Support Vector Machine',
+  ],
+  'TensorFlow (Python)': ['Neural Network Autoregression', 'LSTM'],
+  'Prophet (Python)': ['Prophet'],
+  PyCaret: [
+    'Linear Regression',
+    'Random Forest',
+    'XGBoost',
+    'LightGBM',
+    'Catboost',
+    'AdaBoost',
+    'Decision Tree',
+    'Support Vector Machine',
+    'Gaussian Processes',
+  ],
+  XGBoost: ['XGBoost'],
+  LightGBM: ['LightGBM'],
+  'Catboost (Python)': ['Catboost'],
+  Hyperopt: [],
+  Optuna: [],
+  Spearmint: [],
+  'Ray Tune': [],
+};
+
 export const modelTypeOptions = [
   'Linear Regression',
   'ARIMA',
