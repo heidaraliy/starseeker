@@ -36,3 +36,12 @@
   z-index: -1;
   background-color: #03001c;
 }
+
+.blur {
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.hidden {
+  display: none;
+}

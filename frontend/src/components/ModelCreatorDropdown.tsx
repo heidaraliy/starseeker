@@ -67,7 +67,6 @@ const ModelCreatorDropdown: React.FC<ModelCreatorDropdownProps> = ({
     updateDropdownDirection();
     window.addEventListener('resize', updateDropdownDirection);
 
-    // Cleanup event listener
     return () => window.removeEventListener('resize', updateDropdownDirection);
   }, []);
 

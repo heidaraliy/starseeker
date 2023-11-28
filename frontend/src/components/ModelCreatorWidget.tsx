@@ -5,27 +5,17 @@ import ModelCreatorDropdown from './ModelCreatorDropdown';
 import PackageSelector from './PackageSelector';
 import Tooltip from './Tooltip';
 import { forecastTypeOptions, forecastToIcon } from '../consts/forecastTypes';
-import {
-  packageToModelsMap,
-  modelTypeOptions,
-  modelToIcon,
-} from '../consts/modelTypes';
+import { packageToModelsMap, modelToIcon } from '../consts/modelTypes';
 import {
   programmingLanguageOptions,
   languageToIcon,
 } from '../consts/languageTypes';
-import languagePackageMap from '../consts/languagePackageMap';
 import { getTooltipMessage } from '../utils/getTooltipMessage';
-import axios from 'axios';
+import AuxiliaryModelCreatorWidget from './AuxiliaryModelCreatorWidget';
 
 const ModelCreatorWidget: React.FC = () => {
   //set key for packageSelectorKey so we can refresh it to default when a user clicks the refresh button
   const [packageSelectorKey, setPackageSelectorKey] = useState(0);
-
-  //conditional package rendering logic
-  const getPackagesByLanguage = (selectedLanguage) => {
-    return languagePackageMap[selectedLanguage] || [];
-  };
 
   //also need to process package selection to render available models
   const [selectedPackages, setSelectedPackages] = useState([]);
@@ -34,23 +24,6 @@ const ModelCreatorWidget: React.FC = () => {
   const handlePackageSelect = (selectedPackages) => {
     setSelectedPackages(selectedPackages);
   };
-
-  useEffect(() => {
-    console.log('Selected packages:', selectedPackages);
-
-    if (selectedPackages.length > 0) {
-      let modelsSet = new Set();
-      selectedPackages.forEach((pkg) => {
-        const modelsForPackage = packageToModelsMap[pkg] || [];
-        modelsForPackage.forEach((model) => modelsSet.add(model));
-      });
-
-      console.log('Models set:', modelsSet); // Debugging
-      setFilteredModelOptions([...modelsSet]);
-    } else {
-      setFilteredModelOptions(modelTypeOptions);
-    }
-  }, [selectedPackages]);
 
   //forecast type selection consts, states, and handling
   const [selectedForecast, setSelectedForecast] = useState<string | null>('');
@@ -83,27 +56,36 @@ const ModelCreatorWidget: React.FC = () => {
     setPackageSelectorKey((prevKey) => prevKey + 1);
   };
 
-  //prep data to send to backend
-  const handleProcessModel = async () => {
-    try {
-      const dataToSend = {
-        forecastType: selectedForecast,
-        language: selectedLanguage,
-        selectedModel: selectedModel,
-      };
+  //overlay blur for package selector
+  const showModelCreator = !selectedForecast || !selectedLanguage;
 
-      //endpoint
-      const response = await axios.post('/api/model/create', dataToSend);
+  //rendering models conditionally
+  useEffect(() => {
+    const modelsSet = new Set();
+    let modelOptionsAvailable = false;
 
-      //success
-      console.log('Model created! Response data:', response.data);
-    } catch (error) {
-      //failure
-      console.error('Model creation failure.', error);
-    } finally {
-      //empty
+    if (selectedPackages.length > 0) {
+      selectedPackages.forEach((pkg) => {
+        const modelsForPackage = packageToModelsMap[pkg] || [];
+        modelsForPackage.forEach((model) => {
+          modelsSet.add(model);
+          modelOptionsAvailable = true;
+        });
+      });
     }
-  };
+
+    const newFilteredModelOptions = modelOptionsAvailable
+      ? [...modelsSet]
+      : [
+          'No models available for selection. Please select your options above!',
+        ];
+
+    setFilteredModelOptions(newFilteredModelOptions);
+
+    if (!modelsSet.has(selectedModel)) {
+      setSelectedModel(null);
+    }
+  }, [selectedPackages, selectedModel]);
 
   return (
     <div className="flex md:flex-col xl:flex-row xl:-space-x-0.5">
@@ -153,51 +135,53 @@ const ModelCreatorWidget: React.FC = () => {
             tooltipType="languageType"
             getTooltipMessage={getTooltipMessage}
           />
-          <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
+          <div
+            className={`tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2 ${
+              showModelCreator ? 'blur' : ''
+            }`}
+          >
             Select packages:
           </div>
-          <div
-            className="package-selector-container"
-            style={{ position: 'relative' }}
-          >
-            {(!selectedForecast || !selectedLanguage) && (
-              <div className="package-selector-overlay"></div>
-            )}
+          <div className={`${showModelCreator ? 'blur' : ''}`}>
             <PackageSelector
               key={packageSelectorKey}
               selectedLanguage={selectedLanguage}
               onPackageSelect={handlePackageSelect}
             />
           </div>
-          <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
-            Select model type:
-          </div>
-          <ModelCreatorDropdown
-            iconPlaceholder={google_question_mark}
-            iconImage={modelToIcon[selectedModel] || google_question_mark}
-            options={filteredModelOptions}
-            onSelect={handleModelSelect}
-            placeholder="Select a model type."
-            currentSelection={selectedModel || ''}
-            tooltipType="modelType"
-            getTooltipMessage={getTooltipMessage}
-          />
-        </div>
-      </div>
-      <div className="xl:my-auto md:mx-auto md:-mt-0.5 -z-1">
-        <div className="bg-neutral-50 md:w-[38rem] xl:w-[32rem] 2xl:w-[40rem] drop-shadow-xl">
-          <div className="border-2 border-black md:h-[28rem] xl:h-[41rem]">
-            <div className="flex justify-center py-6">
-              <button
-                className="bg-neutral-200 hover:bg-neutral-300 hover:-translate-y-0.5 active:translate-y-0 text-slate-900 tracking-tighter font-heebo px-4 border-2 border-black shadow-lg duration-200 transition ease-in-out"
-                onClick={handleProcessModel}
-              >
-                Process Model
-              </button>
+          <span
+            className={`package-selector ${
+              showModelCreator
+                ? 'absolute flex justify-center top-[22rem] left-0 right-0 bottom-0 font-heebo font-light tracking-tighter text-lg text-center max-w-sm max-h-16 mx-auto border-2 border-black bg-neutral-200 shadow-2xl rounded-sm'
+                : 'hidden'
+            }`}
+          >
+            <span className="absolute -left-4 -top-4 text-2xl">⚠️</span>
+            Please select your forecast data type and model language above to
+            continue!
+          </span>
+          <div className={`package-selector ${showModelCreator ? 'blur' : ''}`}>
+            <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
+              Select model type:
             </div>
+            <ModelCreatorDropdown
+              iconPlaceholder={google_question_mark}
+              iconImage={modelToIcon[selectedModel] || google_question_mark}
+              options={filteredModelOptions}
+              onSelect={handleModelSelect}
+              placeholder="Select a model type."
+              currentSelection={selectedModel || ''}
+              tooltipType="modelType"
+              getTooltipMessage={getTooltipMessage}
+            />
           </div>
         </div>
       </div>
+      <AuxiliaryModelCreatorWidget
+        selectedModel={selectedModel}
+        selectedLanguage={selectedLanguage}
+        selectedForecast={selectedForecast}
+      />
     </div>
   );
 };

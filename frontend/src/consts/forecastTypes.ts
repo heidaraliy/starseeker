@@ -4,8 +4,8 @@ import google_line_chart from '../assets/google_line_chart.svg';
 
 export const forecastTypeOptions = [
   'Time Series',
-  'Cross-Sectional Data',
-  'Logitudinal Data',
+  // 'Cross-Sectional Data',
+  // 'Logitudinal Data',
 ];
 
 export const forecastToIcon = {

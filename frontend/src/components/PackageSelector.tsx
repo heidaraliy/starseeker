@@ -8,11 +8,9 @@ const PackageSelector = ({ selectedLanguage, onPackageSelect }) => {
   const [selectedPackages, setSelectedPackages] = useState([]);
 
   useEffect(() => {
-    // Set the available packages based on the selected language
     if (selectedLanguage && languagePackageMap[selectedLanguage]) {
       setAvailablePackages(languagePackageMap[selectedLanguage]);
     } else {
-      // If no language is selected or it doesn't exist in the map, set an empty array or a default list
       setAvailablePackages([]);
     }
   }, [selectedLanguage]);
@@ -23,23 +21,19 @@ const PackageSelector = ({ selectedLanguage, onPackageSelect }) => {
   });
 
   const addPackage = (pkg) => {
-    setSelectedPackages((currentSelected) => {
-      const newSelected = [...currentSelected, pkg];
-      onPackageSelect(newSelected);
-      return newSelected;
-    });
+    const newSelected = [...selectedPackages, pkg];
+    setSelectedPackages(newSelected);
     setAvailablePackages((currentAvailable) =>
       currentAvailable.filter((p) => p !== pkg)
     );
+    setTimeout(() => onPackageSelect(newSelected), 0);
   };
 
   const removePackage = (pkg) => {
+    const newSelected = selectedPackages.filter((p) => p !== pkg);
+    setSelectedPackages(newSelected);
     setAvailablePackages((currentAvailable) => [...currentAvailable, pkg]);
-    setSelectedPackages((currentSelected) => {
-      const newSelected = currentSelected.filter((p) => p !== pkg);
-      onPackageSelect(newSelected);
-      return newSelected;
-    });
+    setTimeout(() => onPackageSelect(newSelected), 0);
   };
 
   const handleMouseEnter = (pkg) => {
@@ -89,12 +83,16 @@ const PackageSelector = ({ selectedLanguage, onPackageSelect }) => {
                 <button
                   className="h-6 text-slate-900 font-heebo tracking-tighter bg-neutral-400 hover:bg-neutral-500 focus:outline-none duration-200 transition ease-in-out"
                   onClick={() => removePackage(pkg)}
+                  onMouseEnter={() => handleMouseEnter(pkg)}
+                  onMouseLeave={handleMouseLeave}
                 >
                   <span className="material-symbols-outlined">arrow_left</span>
                 </button>
                 <button
                   className="flex-grow h-6 text-slate-900 font-heebo tracking-tighter text-sm bg-neutral-50 hover:bg-neutral-200 focus:outline-none duration-200 transition ease-in-out"
                   onClick={() => removePackage(pkg)}
+                  onMouseEnter={() => handleMouseEnter(pkg)}
+                  onMouseLeave={handleMouseLeave}
                 >
                   {pkg}
                 </button>
