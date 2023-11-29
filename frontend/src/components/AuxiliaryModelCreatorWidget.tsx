@@ -29,6 +29,8 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
   const showAuxModelCreator =
     !selectedForecast || !selectedLanguage || !selectedModel;
 
+  const openAdvancedParameterSettingsModal = () => {};
+
   //prep data to send to backend
   const handleProcessModel = async () => {
     try {
@@ -67,7 +69,31 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
                 </span>
                 Specify your {selectedModel} parameters:
               </div>
-              <div className="mx-auto px-6">{renderInputs()}</div>
+              <div className="mx-auto px-6 mt-2">{renderInputs()}</div>
+              <div className="flex justify-center">
+                <button
+                  onClick={openAdvancedParameterSettingsModal}
+                  className="my-4 font-heebo font-light text-neutral-50 border-indigo-950 bg-indigo-800 border-2 p-1 text-sm hover:-translate-y-0.5 active:translate-y-0 duration-200 transition"
+                >
+                  Advanced Parameter Settings
+                </button>
+              </div>
+              <div className="flex flex-col px-2">
+                <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg">
+                  <span className="material-symbols-outlined text-lg align-bottom m-0.5 cursor-help">
+                    info
+                  </span>
+                  Enter a name for your model:
+                  <div className="mx-6 mt-2">
+                    <label className="font-heebo font-light text-sm"></label>
+                    <input
+                      type="text"
+                      placeholder="name"
+                      className="border-2 border-black font-heebo font-light text-sm pl-1.5 w-full"
+                    ></input>
+                  </div>
+                </div>
+              </div>
               <div className="flex justify-center">
                 <button
                   className="bg-neutral-200 hover:bg-neutral-300 hover:-translate-y-0.5 active:translate-y-0 text-slate-900 tracking-tighter font-heebo px-4 mt-4 border-2 border-black shadow-lg duration-200 transition ease-in-out"
