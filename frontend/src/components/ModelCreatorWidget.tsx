@@ -18,10 +18,10 @@ const ModelCreatorWidget: React.FC = () => {
   const [packageSelectorKey, setPackageSelectorKey] = useState(0);
 
   //also need to process package selection to render available models
-  const [selectedPackages, setSelectedPackages] = useState([]);
+  const [selectedPackages, setSelectedPackages] = useState<string[]>([]);
   const [filteredModelOptions, setFilteredModelOptions] = useState([]);
 
-  const handlePackageSelect = (selectedPackages) => {
+  const handlePackageSelect = (selectedPackages: string[]) => {
     setSelectedPackages(selectedPackages);
   };
 
@@ -59,7 +59,7 @@ const ModelCreatorWidget: React.FC = () => {
   //overlay blur for package selector
   const showModelCreator = !selectedForecast || !selectedLanguage;
 
-  //rendering models conditionally
+  //useEffect for rendering models conditionally
   useEffect(() => {
     const modelsSet = new Set();
     let modelOptionsAvailable = false;
@@ -90,7 +90,7 @@ const ModelCreatorWidget: React.FC = () => {
   return (
     <div className="flex md:flex-col xl:flex-row xl:-space-x-0.5">
       <div className="bg-neutral-50 md:w-[42rem] xl:w-[36rem] 2xl:w-[44rem] drop-shadow-2xl z-10">
-        <div className="border-2 border-black h-[42.5rem]">
+        <div className="border-2 border-black h-[44.5rem]">
           <div className="drop-shadow-xl flex flex-row font-heebo border-b-2 border-black bg-neutral-400 h-[2rem] justify-between items-center">
             <div>
               <span className="material-symbols-outlined m-2">terminal</span>
@@ -110,6 +110,9 @@ const ModelCreatorWidget: React.FC = () => {
             </Tooltip>
           </div>
           <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
+            <span className="material-symbols-outlined text-lg align-bottom m-0.5 cursor-help">
+              info
+            </span>
             Select forecast data type:
           </div>
           <ModelCreatorDropdown
@@ -123,6 +126,9 @@ const ModelCreatorWidget: React.FC = () => {
             getTooltipMessage={getTooltipMessage}
           />
           <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
+            <span className="material-symbols-outlined text-lg align-bottom m-0.5 cursor-help">
+              info
+            </span>
             Select model language:
           </div>
           <ModelCreatorDropdown
@@ -140,6 +146,9 @@ const ModelCreatorWidget: React.FC = () => {
               showModelCreator ? 'blur' : ''
             }`}
           >
+            <span className="material-symbols-outlined text-lg align-bottom m-0.5 cursor-help">
+              info
+            </span>
             Select packages:
           </div>
           <div className={`${showModelCreator ? 'blur' : ''}`}>
@@ -162,6 +171,9 @@ const ModelCreatorWidget: React.FC = () => {
           </span>
           <div className={`package-selector ${showModelCreator ? 'blur' : ''}`}>
             <div className="tracking-tighter font-heebo text-[1.05rem] drop-shadow-lg m-2">
+              <span className="material-symbols-outlined text-lg align-bottom m-0.5 cursor-help">
+                info
+              </span>
               Select model type:
             </div>
             <ModelCreatorDropdown
@@ -181,6 +193,7 @@ const ModelCreatorWidget: React.FC = () => {
         selectedModel={selectedModel}
         selectedLanguage={selectedLanguage}
         selectedForecast={selectedForecast}
+        selectedPackages={selectedPackages}
       />
     </div>
   );

@@ -9,7 +9,7 @@ const languagePackageMap = {
     // 'LightGBM',
     // 'Catboost (Python)',
     // 'Hyperopt',
-    // 'Optuna',
+    'Optuna',
     // 'Spearmint',
     // 'Ray Tune',
   ],
