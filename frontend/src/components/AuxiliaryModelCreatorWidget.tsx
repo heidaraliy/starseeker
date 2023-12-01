@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { modelParameters } from './models/ModelParameters';
+import { FC, useState } from 'react';
+import { modelParameters as modelParametersConfig } from './models/ModelParameters';
 import axios from 'axios';
 
 interface AuxiliaryModelCreatorProps {
@@ -18,10 +18,30 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
   //track whether or not an optimizer is being used
   const useOptimizer = selectedPackages?.includes('Optuna') ?? false;
 
+  const [modelName, setModelName] = useState('');
+
+  const handleModelNameChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setModelName(event.target.value);
+  };
+
+  const [modelParameters, setModelParameters] = useState<{
+    [key: string]: number | string;
+  }>({});
+
+  const handleParameterChange = (param: string, value: number | string) => {
+    const numericValue = typeof value === 'string' ? Number(value) || 0 : value;
+    setModelParameters((prev) => ({ ...prev, [param]: numericValue }));
+  };
+
   //render appropriate model params based on selected model
   const renderInputs = () => {
-    if (selectedModel && modelParameters[selectedModel]) {
-      return modelParameters[selectedModel](useOptimizer);
+    if (selectedModel && modelParametersConfig[selectedModel]) {
+      return modelParametersConfig[selectedModel](
+        useOptimizer,
+        handleParameterChange
+      );
     }
   };
 
@@ -35,20 +55,24 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
   const handleProcessModel = async () => {
     try {
       const dataToSend = {
+        modelName: modelName,
         forecastType: selectedForecast,
         language: selectedLanguage,
         packages: selectedPackages,
-        model: selectedModel,
+        modelType: selectedModel,
+        modelParameters: modelParameters,
       };
+
+      console.log(dataToSend);
 
       //endpoint
       const response = await axios.post('/api/model/create', dataToSend);
 
       //success
       console.log('Model created! Response data:', response.data);
-    } catch (error) {
+    } catch (placeholder) {
       //failure
-      console.error('Model creation failure.', error);
+      console.error('Model creation failure.');
     } finally {
       //empty
     }
@@ -90,6 +114,8 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
                       type="text"
                       placeholder="name"
                       className="border-2 border-black font-heebo font-light text-sm pl-1.5 w-full"
+                      value={modelName}
+                      onChange={handleModelNameChange}
                     ></input>
                   </div>
                 </div>
