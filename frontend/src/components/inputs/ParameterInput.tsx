@@ -18,13 +18,13 @@ const ParameterInput: FC<ParameterInputProps> = ({
   const handleMinChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setMinValue(value);
-    onParameterChange(parameter + '_min', Number(value)); // Append '_min' to differentiate from max
+    onParameterChange(parameter + ': Minimum', Number(value));
   };
 
   const handleMaxChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setMaxValue(value);
-    onParameterChange(parameter + '_max', Number(value)); // Append '_max' to differentiate from min
+    onParameterChange(parameter + ': Maximum', Number(value));
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

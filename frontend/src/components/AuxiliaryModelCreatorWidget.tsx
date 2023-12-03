@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { modelParameters as modelParametersConfig } from './models/ModelParameters';
+import { formatToSnakeCase } from '../utils/formatToSnakeCase';
 import axios from 'axios';
 
 interface AuxiliaryModelCreatorProps {
@@ -9,6 +10,21 @@ interface AuxiliaryModelCreatorProps {
   selectedPackages: string[];
 }
 
+interface DataToSend {
+  forecast_type_formatted: string;
+  forecast_type_raw: string;
+  language_formatted: string;
+  language_raw: string;
+  packages_formatted: string[];
+  packages_raw: string[];
+  model_type_formatted: string;
+  model_type_raw: string;
+  model_name_formatted: string;
+  model_name_raw: string;
+  model_parameters_formatted: { [key: string]: string | number };
+  model_parameters_raw: { [key: string]: string | number };
+}
+
 const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
   selectedModel,
   selectedLanguage,
@@ -16,7 +32,8 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
   selectedPackages = [],
 }) => {
   //track whether or not an optimizer is being used
-  const useOptimizer = selectedPackages?.includes('Optuna') ?? false;
+  const useOptimizer =
+    selectedPackages?.includes('Optuna' || 'Spearmint') ?? false;
 
   const [modelName, setModelName] = useState('');
 
@@ -51,30 +68,46 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
 
   const openAdvancedParameterSettingsModal = () => {};
 
-  //prep data to send to backend
-  const handleProcessModel = async () => {
+  //pre-process to snake_case
+  const processDataToSend = () => {
+    // Process the model parameters
+    const processedParameters = Object.keys(modelParameters).reduce(
+      (acc, key) => {
+        const formattedKey = formatToSnakeCase(key);
+        acc[formattedKey] = modelParameters[key];
+        return acc;
+      },
+      {}
+    );
+
+    // Process other data
+    const dataToSend = {
+      forecast_type_formatted: formatToSnakeCase(selectedForecast),
+      forecast_type_raw: selectedForecast,
+      language_formatted: formatToSnakeCase(selectedLanguage),
+      language_raw: selectedLanguage,
+      packages_formatted: selectedPackages.map((pkg) => formatToSnakeCase(pkg)),
+      packages_raw: selectedPackages,
+      model_type_formatted: formatToSnakeCase(selectedModel),
+      model_type_raw: selectedModel,
+      model_name_formatted: formatToSnakeCase(modelName),
+      model_name_raw: modelName,
+      model_parameters_formatted: processedParameters,
+      model_parameters_raw: modelParameters,
+    };
+
+    handleProcessModel(dataToSend);
+  };
+
+  // Function to handle the actual model processing
+  const handleProcessModel = async (dataToSend: DataToSend) => {
     try {
-      const dataToSend = {
-        modelName: modelName,
-        forecastType: selectedForecast,
-        language: selectedLanguage,
-        packages: selectedPackages,
-        modelType: selectedModel,
-        modelParameters: modelParameters,
-      };
-
-      console.log(dataToSend);
-
-      //endpoint
+      // Endpoint call with dataToSend
       const response = await axios.post('/api/model/create', dataToSend);
-
-      //success
       console.log('Model created! Response data:', response.data);
-    } catch (placeholder) {
-      //failure
-      console.error('Model creation failure.');
-    } finally {
-      //empty
+    } catch (error) {
+      console.error('Model creation failure.', error);
+      console.log(dataToSend);
     }
   };
   return (
@@ -123,7 +156,7 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
               <div className="flex justify-center">
                 <button
                   className="bg-neutral-200 hover:bg-neutral-300 hover:-translate-y-0.5 active:translate-y-0 text-slate-900 tracking-tighter font-heebo px-4 mt-4 border-2 border-black shadow-lg duration-200 transition ease-in-out"
-                  onClick={handleProcessModel}
+                  onClick={processDataToSend}
                 >
                   Process Model
                 </button>

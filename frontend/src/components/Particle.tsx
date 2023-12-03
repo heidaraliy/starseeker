@@ -22,7 +22,7 @@ const ParticleSystem: React.FC = () => {
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    const particleCount = 20;
+    const particleCount = 15;
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({

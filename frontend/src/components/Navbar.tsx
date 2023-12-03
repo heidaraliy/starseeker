@@ -98,7 +98,7 @@ const Navbar = () => {
           </div>
           {/* sign in */}
           <div className="hidden lg:flex items-center">
-            <Link to="/prod/dashboard">
+            <Link to="/sign_in">
               <img
                 src={mono_sign_in}
                 style={{ opacity: isSignInHovered ? 0 : 1 }}
@@ -182,7 +182,7 @@ const Navbar = () => {
           Contact Us
         </Link>
         <Link
-          to="/prod/dashboard"
+          to="/sign_in"
           className="block tracking-tighter text-center items-center font-heebo font-bold w-28 py-0.5 my-4 mt-2 text-slate-700 bg-indigo-50 border-2 border-slate-400 rounded"
           onClick={toggleMobileNavbar}
         >
