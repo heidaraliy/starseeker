@@ -23,7 +23,7 @@ const SignInComponent = () => {
         </div>
         <div className="relative flex py-4 items-center px-4">
           <div className="flex-grow border-t border-neutral-400"></div>
-          <span className="flex-shrink mx-2 text-neutral-400 font-heebo font-light">
+          <span className="flex-shrink mx-2 text-neutral-600 font-heebo font-light">
             Or, sign in with
           </span>
           <div className="flex-grow border-t border-neutral-400"></div>

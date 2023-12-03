@@ -70,7 +70,7 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
 
   //pre-process to snake_case
   const processDataToSend = () => {
-    // Process the model parameters
+    // process params
     const processedParameters = Object.keys(modelParameters).reduce(
       (acc, key) => {
         const formattedKey = formatToSnakeCase(key);
@@ -80,7 +80,7 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
       {}
     );
 
-    // Process other data
+    // process other selections
     const dataToSend = {
       forecast_type_formatted: formatToSnakeCase(selectedForecast),
       forecast_type_raw: selectedForecast,
@@ -99,10 +99,9 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
     handleProcessModel(dataToSend);
   };
 
-  // Function to handle the actual model processing
+  // handle actual data processing
   const handleProcessModel = async (dataToSend: DataToSend) => {
     try {
-      // Endpoint call with dataToSend
       const response = await axios.post('/api/model/create', dataToSend);
       console.log('Model created! Response data:', response.data);
     } catch (error) {
