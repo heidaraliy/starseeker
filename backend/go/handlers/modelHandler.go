@@ -2,8 +2,7 @@
 package handlers
 
 import (
-    "net/http"
-    "yourapp/services"
+	"net/http"
 )
 
 func CreateModelHandler(w http.ResponseWriter, r *http.Request) {

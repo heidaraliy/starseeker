@@ -2,19 +2,16 @@
 package main
 
 import (
-    "log"
-    "net/http"
-    "yourapp/routes"
+	"backend/backend/go/routes"
+	"log"
+	"net/http"
 )
 
 func main() {
-    mux := http.NewServeMux()
-    
-    routes.SetupRoutes(mux)
-    
-    log.Println("Server starting on :8080")
-    err := http.ListenAndServe(":8080", mux)
-    if err != nil {
-        log.Fatalf("Server failed to start: %v", err)
+    router := routes.SetupRoutes()
+
+    log.Println("Starting server on http://localhost:8080")
+    if err:= http.ListenAndServe(":8080", router); err != nil {
+        log.Fatal(err)
     }
 }

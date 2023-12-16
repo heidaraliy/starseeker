@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import SignUpInput from './inputs/SignUpInput';
 import { Link } from 'react-router-dom';
 import google_logo from '../assets/google_logo_original.svg';

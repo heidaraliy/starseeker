@@ -2,12 +2,15 @@
 package routes
 
 import (
-    "net/http"
-    "yourapp/handlers"
-    "yourapp/middleware"
+	"backend/handlers"
+	"net/http"
 )
 
-func SetupRoutes(mux *http.ServeMux) {
-    mux.Handle("/api/model/create", middleware.AuthMiddleware(http.HandlerFunc(handlers.CreateModelHandler)))
-    // Define other routes
+func SetupRoutes() *http.ServeMux {
+    mux := http.NewServeMux()
+
+    //user routes
+    mux.HandleFunc("/api/users/signup", handlers.SignUp)
+
+    return mux
 }

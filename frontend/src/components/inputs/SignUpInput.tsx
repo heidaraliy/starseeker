@@ -39,7 +39,7 @@ const SignUpInput: FC<SignUpInputProps> = ({
         onChange={handleInputChange}
       />
       {error && (
-        <span className="text-red-500 text-xs text-left font-heebo font-light pt-1">
+        <span className="text-red-700 text-xs text-left font-heebo font-light pt-1">
           {error}
         </span>
       )}{' '}
