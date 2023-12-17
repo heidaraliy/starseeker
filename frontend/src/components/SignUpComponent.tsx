@@ -11,7 +11,7 @@ const SignUpComponent = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const handleSignUpSubmit = async (event) => {
+  const handleSignUpSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
     const [isEmailValid, emailError] = validateEmail(email);
@@ -23,7 +23,10 @@ const SignUpComponent = () => {
     if (!isEmailValid || !isPasswordValid) return;
 
     try {
-      const response = await axios.post('/api/signup', { email, password });
+      const response = await axios.post('http://localhost:8080/sign_up', {
+        email,
+        password,
+      });
       console.log(response.data);
     } catch (error) {
       console.error(error);
