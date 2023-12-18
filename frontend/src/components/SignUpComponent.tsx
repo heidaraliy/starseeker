@@ -8,8 +8,10 @@ import { validatePassword, validateEmail } from '../utils/signUpErrorHandling';
 const SignUpComponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
   const handleSignUpSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -17,10 +19,17 @@ const SignUpComponent = () => {
     const [isEmailValid, emailError] = validateEmail(email);
     const [isPasswordValid, passwordError] = validatePassword(password);
 
+    //pw confirmation
+    const isConfirmPasswordValid = password === confirmPassword;
+    const confirmPasswordError = isConfirmPasswordValid
+      ? ''
+      : 'Passwords do not match.';
+
     setEmailError(emailError);
     setPasswordError(passwordError);
+    setConfirmPasswordError(confirmPasswordError);
 
-    if (!isEmailValid || !isPasswordValid) return;
+    if (!isEmailValid || !isPasswordValid || !isConfirmPasswordValid) return;
 
     try {
       const response = await axios.post('http://localhost:8080/sign_up', {
@@ -30,7 +39,6 @@ const SignUpComponent = () => {
       console.log(response.data);
     } catch (error) {
       console.error(error);
-      console.log({ email, password });
     }
   };
   return (
@@ -54,6 +62,14 @@ const SignUpComponent = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           error={passwordError}
+        />
+        <SignUpInput
+          label="Confirm your password:"
+          type="password"
+          name="confirmPassword"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          error={confirmPasswordError}
         />
         <div className="mx-12 pt-8">
           <button
