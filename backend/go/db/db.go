@@ -12,10 +12,8 @@ import (
 var once sync.Once
 var instance *sql.DB
 
-// GetDB returns a singleton database instance
 func GetDB() *sql.DB {
 	once.Do(func() {
-		// Replace with your actual database connection details
 		const (
 			host     = "localhost"
 			port     = 5432 // Default port for PostgreSQL
@@ -38,6 +36,5 @@ func GetDB() *sql.DB {
 			log.Fatalf("Unable to ping database: %v\n", err)
 		}
 	})
-
 	return instance
 }
