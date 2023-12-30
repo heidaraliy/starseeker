@@ -1,9 +1,9 @@
 import React from 'react';
 import Logo from '../../assets/starseeker_color.png';
-import ParticleSystem from '../../components/Particle';
-import SignInComponent from '../../components/SignInComponent';
+import ParticleSystem from '../components/Particle';
+import SignUpComponent from './SignUpComponent';
 
-const SignInPage = () => {
+const SignUpPage = () => {
   return (
     <div className="flex flex-col">
       <div className="matrix animate-fade-in-flat">
@@ -13,7 +13,7 @@ const SignInPage = () => {
         <div className="animate-fade-in-left">
           <div className="flex flex-col justify-center items-center">
             <img src={Logo} className="w-56 lg:w-72 mt-36" />
-            <SignInComponent />
+            <SignUpComponent />
           </div>
         </div>
       </div>
@@ -21,4 +21,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default SignUpPage;

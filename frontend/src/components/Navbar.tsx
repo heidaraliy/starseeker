@@ -4,6 +4,7 @@ import logo from '../assets/starseeker_mono.png';
 import colored_logo from '../assets/starseeker_color.png';
 import mono_sign_in from '../assets/sign_in_mono.png';
 import colored_sign_in from '../assets/sign_in_color.png';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +12,11 @@ const Navbar = () => {
   const [isSignInHovered, setIsSignInHovered] = useState(false);
   const location = useLocation();
   const currentPath = location.pathname;
+  const { loginWithRedirect } = useAuth0();
+
+  const handleSignIn = () => {
+    loginWithRedirect();
+  };
 
   const toggleMobileNavbar = () => {
     setIsOpen(!isOpen);
@@ -98,24 +104,25 @@ const Navbar = () => {
           </div>
           {/* sign in */}
           <div className="hidden lg:flex items-center">
-            <Link to="/sign_in">
-              <img
-                src={mono_sign_in}
-                style={{ opacity: isSignInHovered ? 0 : 1 }}
-                onMouseEnter={() => setIsSignInHovered(true)}
-                onMouseLeave={() => setIsSignInHovered(false)}
-                alt="Modulo Logo"
-                className="relative w-36 drop-shadow-lg transition-all hover:drop-shadow-2xl active:translate-y-0.5 duration-300"
-              />
-              <img
-                src={colored_sign_in}
-                style={{ opacity: isSignInHovered ? 1 : 0 }}
-                onMouseEnter={() => setIsSignInHovered(true)}
-                onMouseLeave={() => setIsSignInHovered(false)}
-                alt="Modulo Logo"
-                className="absolute top-[1.04rem] w-36 drop-shadow-lg transition-all hover:drop-shadow-2xl active:translate-y-0.5 duration-300"
-              />
-            </Link>
+            {/* <a href="http://localhost:8080/auth/start"> */}
+            <img
+              src={mono_sign_in}
+              style={{ opacity: isSignInHovered ? 0 : 1 }}
+              onMouseEnter={() => setIsSignInHovered(true)}
+              onMouseLeave={() => setIsSignInHovered(false)}
+              alt="Modulo Logo"
+              className="relative w-36 drop-shadow-lg transition-all hover:drop-shadow-2xl active:translate-y-0.5 duration-300"
+            />
+            <img
+              onClick={handleSignIn}
+              src={colored_sign_in}
+              style={{ opacity: isSignInHovered ? 1 : 0 }}
+              onMouseEnter={() => setIsSignInHovered(true)}
+              onMouseLeave={() => setIsSignInHovered(false)}
+              alt="Modulo Logo"
+              className="absolute top-[1.04rem] w-36 drop-shadow-lg transition-all hover:drop-shadow-2xl active:translate-y-0.5 duration-300"
+            />
+            {/* </a> */}
           </div>
           {/* Mobile menu button */}
           <div className="lg:hidden flex items-center">
@@ -181,13 +188,12 @@ const Navbar = () => {
         >
           Contact Us
         </Link>
-        <Link
-          to="/sign_in"
-          className="block tracking-tighter text-center items-center font-heebo font-bold w-28 py-0.5 my-4 mt-2 text-slate-700 bg-indigo-50 border-2 border-slate-400 rounded"
+        <div
+          className="block tracking-tighter text-center items-center font-heebo font-bold w-28 py-0.5 my-4 mt-2 text-neutral-700 bg-neutral-50 border-2 border-neutral-400 rounded"
           onClick={toggleMobileNavbar}
         >
-          Sign In
-        </Link>
+          <a href="http://localhost:8080/auth/start">Sign In</a>
+        </div>
       </div>
     </nav>
   );

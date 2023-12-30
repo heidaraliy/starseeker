@@ -2,42 +2,33 @@ package routes
 
 import (
 	"backend/go/handlers"
+	"log"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(signUpHandler *handlers.SignUpHandler) *gin.Engine {
-    router := gin.Default()
-
-    //setup cors with our config'd settings
-    setupCORS(router)
-
-    //housing different routes here -- cleaner integration
-    setupUserRoutes(router, signUpHandler)
-
-    //add new routes here!
-
-    return router
+func SetupRoutes(router *gin.Engine, userHandler *handlers.UserHandler) {
+	setupCORS(router)
+	setupUserRoutes(router, userHandler)
 }
 
-//cors setup -- straightforward
 func setupCORS(router *gin.Engine) {
-    config := cors.DefaultConfig()
-    config.AllowAllOrigins = false
-    config.AllowOrigins = []string{"http://frontenddomain.com"}
-    config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
-    config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization"}
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = false
+	config.AllowOrigins = []string{"http://localhost:5173"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization"}
 
-    router.Use(cors.New(config))
+	router.Use(cors.New(config))
 }
 
-//house all user routes here -- see commented code below to reference syntax
-func setupUserRoutes(router *gin.Engine, signUpHandler *handlers.SignUpHandler) {
-    users := router.Group("")
-    {
-        users.POST("/sign_up", signUpHandler.SignUp)
-        // users.POST("/sign_in", signInHandler.SignIn)
-        // Other user-related routes...
-    }
+func setupUserRoutes(router *gin.Engine, userHandler *handlers.UserHandler) {
+	users := router.Group("")
+
+	{
+		log.Println("Setting up API routes!")
+		users.POST("/api/user/auth", userHandler.UserUpdateHandler)
+		// api routes
+	}
 }

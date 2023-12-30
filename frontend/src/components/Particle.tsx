@@ -12,8 +12,6 @@ interface Particle {
 
 const ParticleSystem: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particles: Particle[] = [];
-  const colors = ['#FFFFFF', '#EDF0F2', '#FDFAFF', '#F6F5FF'];
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -23,6 +21,8 @@ const ParticleSystem: React.FC = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const particleCount = 15;
+    const particles: Particle[] = [];
+    const colors = ['#FFFFFF', '#EDF0F2', '#FDFAFF', '#F6F5FF'];
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
@@ -55,7 +55,7 @@ const ParticleSystem: React.FC = () => {
     };
 
     render();
-  }, [colors, particles]);
+  }, []);
 
   return (
     <canvas ref={canvasRef} width={1000} height={1000} className="canvas" />

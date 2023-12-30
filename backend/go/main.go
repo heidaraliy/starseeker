@@ -1,44 +1,51 @@
-// main.go
 package main
 
 import (
 	"backend/go/db"
 	"backend/go/handlers"
 	"backend/go/repositories"
-	signInService "backend/go/services/user/userSignIn"
-	signUpService "backend/go/services/user/userSignUp"
+	"backend/go/routes"
+	services "backend/go/services/user"
 	"log"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+
 	r := gin.Default()
 
 	r.Use(cors.New(cors.Config{
-		AllowAllOrigins:  true, // for development; specify allowed origins for production
+		AllowOrigins:     []string{"http://localhost:5173"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
 
-	dbConn := db.GetDB()
+	dbConn, err := db.GetDB()
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
 
-	userRepo := repositories.NewUserRepository(dbConn)
-	sessionRepo := repositories.NewSessionRepository(dbConn)
+	userRepository := repositories.NewUserRepository(dbConn)
 
-	userSignUpService := signUpService.NewUserSignUpService(userRepo)
-	userSignUpHandler := handlers.NewSignUpHandler(userSignUpService)
+	// Setup services
+	userService := services.NewUserService(userRepository)
 
-	userSignInService := signInService.NewUserSignInService(userRepo, sessionRepo)
-	userSignInHandler := handlers.NewSignInHandler(userSignInService)
+	// Setup handlers
+	userHandler := handlers.NewUserHandler(userService)
 
-	r.POST("/sign_up", userSignUpHandler.SignUp)
-	r.POST("/sign_in", userSignInHandler.SignIn)
+	routes.SetupRoutes(r, userHandler)
 
-	if err := r.Run(); err != nil {
+	port := ":8080"
+
+	if err := r.Run(port); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }

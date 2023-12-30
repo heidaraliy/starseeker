@@ -35,21 +35,17 @@ var ErrSessionUpdateFailed = errors.New("session update failed")
 
 // create a user session
 func (repo *SessionRepository) CreateUserSession(ctx context.Context, session *models.Session) error {
-	// no session id? make a new one
-	if session.SessionID == uuid.Nil {
-		session.SessionID = uuid.New()
-	}
-
-	// set creation ts
-	session.CreatedAt = time.Now()
-	session.ExpiresAt = session.CreatedAt.Add(24 * time.Hour)
+	// set session vars
+	session.SessionID = uuid.New()
+	session.SessionCreatedAt = time.Now()
+	session.Status = "ACTIVE"
 
 	// db insert
-	query := "INSERT INTO sessions (session_id, user_id, created_at, expires_at, ip_address) VALUES ($1, $2, $3, $4, $5);"
-	log.Printf("Executing CreateSession for session: %+v\n", session)
+	query := "INSERT INTO user_sessions (session_id, user_id, auth0_id, created_at, ip_address, session_device_type) VALUES ($1, $2, $3, $4, $5, $6);"
+	log.Printf("Executing CreateUserSession for session: %+v\n", session)
 
 	// handle errors
-	_, err := repo.DB.ExecContext(ctx, query, session.SessionID, session.UserID, session.CreatedAt, session.ExpiresAt, session.IPAddress)
+	_, err := repo.DB.ExecContext(ctx, query, session.SessionID, session.UserID, session.Auth0ID, session.SessionCreatedAt, session.IPAddress, session.SessionDeviceType)
 	if err != nil {
 		log.Printf("Error executing CreateSession query: %v\n", err)
 		return err
@@ -57,12 +53,3 @@ func (repo *SessionRepository) CreateUserSession(ctx context.Context, session *m
 
 	return nil
 }
-
-// get a user session
-// func (repo *UserRepository) GetUserSession(ctx context.Context, userID uuid.UUID, ipAddress string) error {}
-
-// update a user session
-// func (repo *UserRepository) UpdateUserSession(ctx context.Context, userID uuid.UUID, ipAddress string) error {}
-
-// delete a user session
-// func (repo *UserRepository) GetUserSession(ctx context.Context, userID uuid.UUID, ipAddress string) error {}

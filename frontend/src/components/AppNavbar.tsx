@@ -4,12 +4,18 @@ import logo from '../assets/starseeker_hover.png';
 import colored_logo from '../assets/starseeker_color.png';
 import colored_sign_out from '../assets/sign_out_color.png';
 import AppSidebar from './AppSidebar';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const location = useLocation();
   const currentPath = location.pathname;
+  const { logout } = useAuth0();
+
+  const handleSignOut = () => {
+    logout();
+  };
 
   const toggleMobileNavbar = () => {
     setIsOpen(!isOpen);
@@ -97,13 +103,12 @@ const Navbar = () => {
           </div>
           {/* sign out */}
           <div className="hidden lg:flex items-center">
-            <Link to="/">
-              <img
-                src={colored_sign_out}
-                alt="Modulo Logo"
-                className="w-36 drop-shadow-lg transition-all hover:drop-shadow-xl hover:-translate-y-0.5 duration-300"
-              />
-            </Link>
+            <img
+              src={colored_sign_out}
+              alt="Modulo Logo"
+              className="w-36 drop-shadow-lg transition-all hover:drop-shadow-xl hover:-translate-y-0.5 duration-300"
+              onClick={handleSignOut}
+            />
           </div>
           {/* mobile menu */}
           <div className="lg:hidden flex items-center">
@@ -172,7 +177,7 @@ const Navbar = () => {
         <Link
           to="/"
           className="block tracking-tighter text-center items-center font-heebo font-bold w-28 py-0.5 my-4 mt-2 text-slate-700 bg-indigo-50 border-2 border-slate-400 rounded"
-          onClick={toggleMobileNavbar}
+          onClick={handleSignOut}
         >
           Sign Out
         </Link>

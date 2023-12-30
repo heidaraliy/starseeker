@@ -3,38 +3,41 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"sync"
+
+	"backend/go/config"
 
 	_ "github.com/lib/pq"
 )
 
 var once sync.Once
 var instance *sql.DB
+var instanceErr error
 
-func GetDB() *sql.DB {
+func GetDB() (*sql.DB, error) {
 	once.Do(func() {
-		const (
-			host     = "localhost"
-			port     = 5432 // Default port for PostgreSQL
-			user     = "postgres"
-			password = "123"
-			dbname   = "starseeker_dev"
-		)
-		psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-			"password=%s dbname=%s sslmode=disable",
-			host, port, user, password, dbname)
+		cfg, err := config.GetConfig()
+		if err != nil {
+			instanceErr = err
+			return
+		}
 
-		var err error
+		psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
+			"password=%s dbname=%s sslmode=%s",
+			cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.Database, cfg.SSLMode)
+
 		instance, err = sql.Open("postgres", psqlInfo)
 		if err != nil {
-			log.Fatalf("Unable to connect to database: %v\n", err)
+			instanceErr = fmt.Errorf("Unable to connect to database: %v", err)
+			return
 		}
 
 		err = instance.Ping()
 		if err != nil {
-			log.Fatalf("Unable to ping database: %v\n", err)
+			instanceErr = fmt.Errorf("Unable to ping database: %v", err)
+			return
 		}
 	})
-	return instance
+
+	return instance, instanceErr
 }

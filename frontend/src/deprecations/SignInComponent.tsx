@@ -1,25 +1,80 @@
-import React from 'react';
-import SignUpInput from './inputs/SignUpInput';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import SignUpInput from './SignUpInput';
+import { Link, useNavigate } from 'react-router-dom';
 import google_logo from '../assets/google_logo_original.svg';
+import axios from 'axios';
+
+interface SignInResponse {
+  token: string;
+}
 
 const SignInComponent = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleSignInSubmit = async (email: string, password: string) => {
+    try {
+      const response = await axios.post<SignInResponse>(
+        'http://localhost:8080/sign_in',
+        {
+          email,
+          password,
+        }
+      );
+      localStorage.setItem('token', response.data.token);
+      navigate('/prod/dashboard');
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        setError(error.response.data.error || 'Sign in failed.');
+      }
+      setError('Sign in failed.');
+    }
+  };
+
+  const handleButtonClick = async () => {
+    try {
+      await handleSignInSubmit(email, password);
+    } catch (error) {
+      /* empty */
+    }
+  };
+
   return (
     <div className="flex flex-col mt-6">
       <div className="text-center py-8 border-2 border-neutral-400 rounded-sm bg-indigo-50 h-full w-[22rem] xl:w-[30rem]">
         <span className="drop-shadow-2xl text-3xl text-indigo-950 font-heebo">
           Sign In
         </span>
-        <SignUpInput label="Enter your email:" type="email" name="email" />
+        <SignUpInput
+          label="Enter your email:"
+          type="email"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          error={''}
+        />
         <SignUpInput
           label="Enter your password:"
           type="password"
           name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          error={''}
         />
         <div className="mx-12 pt-8">
-          <button className="border-2 bg-indigo-600 border-indigo-800 rounded-sm w-full font-heebo text-base text-indigo-50 py-1">
+          <button
+            className="border-2 bg-indigo-600 border-indigo-800 rounded-sm w-full font-heebo text-base text-indigo-50 py-1"
+            onClick={handleButtonClick}
+          >
             Sign In
           </button>
+          {error && (
+            <p className="text-red-700 text-xs text-left font-heebo font-light pt-1">
+              {error}
+            </p>
+          )}
         </div>
         <div className="relative flex py-4 items-center px-4">
           <div className="flex-grow border-t border-neutral-400"></div>

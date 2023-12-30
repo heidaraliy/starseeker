@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import SignUpInput from './inputs/SignUpInput';
+import SignUpInput from './SignUpInput.tsx';
 import { Link } from 'react-router-dom';
 import google_logo from '../assets/google_logo_original.svg';
-import axios from 'axios';
-import { validatePassword, validateEmail } from '../utils/signUpErrorHandling';
+import { validatePassword, validateEmail } from '../utils/authErrorHandling.ts';
 
 const SignUpComponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [emailInUseError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
@@ -16,6 +16,7 @@ const SignUpComponent = () => {
   const handleSignUpSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
+    //fe validations
     const [isEmailValid, emailError] = validateEmail(email);
     const [isPasswordValid, passwordError] = validatePassword(password);
 
@@ -30,17 +31,8 @@ const SignUpComponent = () => {
     setConfirmPasswordError(confirmPasswordError);
 
     if (!isEmailValid || !isPasswordValid || !isConfirmPasswordValid) return;
-
-    try {
-      const response = await axios.post('http://localhost:8080/sign_up', {
-        email,
-        password,
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
   };
+
   return (
     <div className="flex flex-col mt-6">
       <div className="text-center py-8 border-2 border-neutral-400 rounded-sm bg-indigo-50 h-full w-[22rem] xl:w-[30rem]">
@@ -78,6 +70,11 @@ const SignUpComponent = () => {
           >
             Create Account
           </button>
+          {emailInUseError && (
+            <p className="text-red-700 text-xs text-left font-heebo font-light pt-1 delay-500 opacity-100">
+              {emailInUseError}
+            </p>
+          )}
         </div>
         <div className="relative flex py-4 items-center px-4">
           <div className="flex-grow border-t border-neutral-400"></div>
