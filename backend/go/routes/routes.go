@@ -8,9 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(router *gin.Engine, userHandler *handlers.UserHandler) {
+func SetupRoutes(router *gin.Engine, userHandler *handlers.UserHandler, userSessionSignInHandler *handlers.UserSessionSignInHandler) {
 	setupCORS(router)
-	setupUserRoutes(router, userHandler)
+	setupUserRoutes(router, userHandler, userSessionSignInHandler)
 }
 
 func setupCORS(router *gin.Engine) {
@@ -23,12 +23,12 @@ func setupCORS(router *gin.Engine) {
 	router.Use(cors.New(config))
 }
 
-func setupUserRoutes(router *gin.Engine, userHandler *handlers.UserHandler) {
+func setupUserRoutes(router *gin.Engine, userHandler *handlers.UserHandler, userSessionSignInHandler *handlers.UserSessionSignInHandler) {
 	users := router.Group("")
 
 	{
 		log.Println("Setting up API routes!")
-		users.POST("/api/user/auth", userHandler.UserUpdateHandler)
+		users.POST("/api/user/auth", userHandler.UserUpdateHandler, userSessionSignInHandler.UserSessionCreationHandler)
 		// api routes
 	}
 }

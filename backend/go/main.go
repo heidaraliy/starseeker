@@ -5,7 +5,8 @@ import (
 	"backend/go/handlers"
 	"backend/go/repositories"
 	"backend/go/routes"
-	services "backend/go/services/user"
+	sessionServices "backend/go/services/session"
+	userServices "backend/go/services/user"
 	"log"
 
 	"github.com/gin-contrib/cors"
@@ -34,14 +35,17 @@ func main() {
 	}
 
 	userRepository := repositories.NewUserRepository(dbConn)
+	sessionRepository := repositories.NewSessionRepository(dbConn)
 
 	// Setup services
-	userService := services.NewUserService(userRepository)
+	userService := userServices.NewUserService(userRepository)
+	userSessionSignInService := sessionServices.NewSessionSignInService(sessionRepository)
 
 	// Setup handlers
 	userHandler := handlers.NewUserHandler(userService)
+	userSessionSignInHandler := handlers.NewUserSessionSignInHandler(userSessionSignInService)
 
-	routes.SetupRoutes(r, userHandler)
+	routes.SetupRoutes(r, userHandler, userSessionSignInHandler)
 
 	port := ":8080"
 

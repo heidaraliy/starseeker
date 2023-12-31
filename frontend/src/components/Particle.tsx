@@ -20,7 +20,7 @@ const ParticleSystem: React.FC = () => {
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    const particleCount = 15;
+    const particleCount = 25;
     const particles: Particle[] = [];
     const colors = ['#FFFFFF', '#EDF0F2', '#FDFAFF', '#F6F5FF'];
 

@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"backend/go/models"
-	services "backend/go/services/user"
+	userServices "backend/go/services/user"
 	"database/sql"
 	"log"
 	"net/http"
@@ -11,10 +11,10 @@ import (
 )
 
 type UserHandler struct {
-	userService *services.UserService
+	userService *userServices.UserService
 }
 
-func NewUserHandler(userService *services.UserService) *UserHandler {
+func NewUserHandler(userService *userServices.UserService) *UserHandler {
 	return &UserHandler{userService: userService}
 }
 
@@ -22,7 +22,6 @@ func (h *UserHandler) UserUpdateHandler(c *gin.Context) {
 	var jsonPayload struct {
 		Sub   string `json:"sub"`
 		Email string `json:"email"`
-		// Include other fields from the payload as needed
 	}
 
 	if err := c.ShouldBindJSON(&jsonPayload); err != nil {
@@ -35,12 +34,13 @@ func (h *UserHandler) UserUpdateHandler(c *gin.Context) {
 		Email:   jsonPayload.Email,
 	}
 
-	log.Printf("Received user data: %+v", user) // Log the received user data
+	log.Printf("Received user data for user creation and update: %+v", user) // Log the received user data
 
 	if err := h.userService.UpdateUserDetails(c, user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	// Send a success response back
-	c.JSON(http.StatusOK, user)
+	// Instead of sending a response, set user data in context and call next
+	c.Set("user", user) // Set the user object in context for the next handler to use
+	c.Next()            // This will pass control to the next handler in the chain
 }

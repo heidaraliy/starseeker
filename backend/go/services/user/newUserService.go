@@ -1,6 +1,4 @@
-// services/user_service.go
-
-package services
+package user
 
 import (
 	"backend/go/models"

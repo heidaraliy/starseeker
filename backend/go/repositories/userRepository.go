@@ -101,6 +101,7 @@ func (repo *UserRepository) FindByEmail(ctx context.Context, email string) (*mod
 	return &user, nil
 }
 
+// update a user: called when user profile changes
 func (repo *UserRepository) UpdateUser(ctx context.Context, user models.User, updates UserUpdate) error {
 	var setClauses []string
 	var args []interface{}
@@ -131,21 +132,6 @@ func (repo *UserRepository) UpdateUser(ctx context.Context, user models.User, up
 		args = append(args, time.Now())
 		argID++
 	}
-	// if updates.ProfileCreation {
-	// 	setClauses = append(setClauses, fmt.Sprintf("user_profile_created_at = $%d", argID))
-	// 	args = append(args, time.Now())
-	// 	argID++
-	// }
-	// if updates.Auth0ID {
-	// 	setClauses = append(setClauses, fmt.Sprintf("auth0_id = $%d", argID))
-	// 	args = append(args, user.Auth0ID)
-	// 	argID++
-	// }
-	// if updates.UserID {
-	// 	setClauses = append(setClauses, fmt.Sprintf("user_id = $%d", argID))
-	// 	args = append(args, user.UserID)
-	// 	argID++
-	// }
 
 	if len(setClauses) == 0 {
 		return nil
@@ -164,27 +150,7 @@ func (repo *UserRepository) UpdateUser(ctx context.Context, user models.User, up
 	return nil
 }
 
+// returns bool, called in handler to determine whether or not UpdateUser needs to run (efficent!)
 func (user UserUpdate) RequiresUpdate() bool {
 	return user.Email || user.Name || user.Role || user.Status || user.ProfileUpdate
-}
-
-func (repo *UserRepository) FindByAuth0ID(ctx context.Context, auth0ID string) (*models.User, error) {
-	var user models.User
-	query := `SELECT user_id, email, auth0_id, ... FROM users WHERE auth0_id = $1;`
-
-	err := repo.DB.QueryRowContext(ctx, query, auth0ID).Scan(
-		&user.UserID,
-		&user.Email,
-		&user.Auth0ID,
-		// ... other fields ...
-	)
-
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, ErrUserNotFound
-		}
-		return nil, err
-	}
-
-	return &user, nil
 }
