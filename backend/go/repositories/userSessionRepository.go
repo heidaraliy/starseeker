@@ -67,7 +67,52 @@ func (repo *SessionRepository) CreateUserSession(ctx context.Context, session *m
 	return nil
 }
 
-// find user by auth0 -- called when creating a session: auth0 is the link between the clientside user payload and a session.
+// create a user session
+func (repo *SessionRepository) TerminateUserSession(ctx context.Context, session *models.Session, user *models.User) error {
+	log.Printf("Terminating session for user with Auth0 ID: %s", user.Auth0ID.String)
+
+	log.Printf("Finding user by Auth0 ID: %s", user.Auth0ID.String)
+	// init user model
+	// Use a different variable name for the user returned by FindUserByAuth0ID
+	_, err := repo.FindSessionByAuth0ID(ctx, user.Auth0ID.String)
+	if err != nil {
+		log.Printf("Failure to find user by Auth0ID: %s", err)
+		return err
+	}
+
+	log.Println("Setting session creation fields.")
+	// set session vars
+	currentTime := time.Now()
+	session.SessionTerminatedAt = sql.NullTime{Time: currentTime, Valid: true}
+	session.Status = "TERMINATED"
+
+	// db insert
+	log.Printf("Executing TerminateUserSession for session: %+v\n", session)
+	query := `UPDATE user_sessions SET session_terminated_at = $1, status = $2 WHERE user_id = $3 AND auth0_id = $4 AND status != 'TERMINATED';`
+
+	// handle errors
+	res, err := repo.DB.ExecContext(ctx, query, currentTime, session.Status, user.UserID, user.Auth0ID.String)
+	if err != nil {
+		log.Printf("Error executing TerminateUserSession query: %v\n", err)
+		return err
+	}
+
+	// Optional: Check if any rows were actually updated
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		log.Printf("Error checking rows affected: %v\n", err)
+		return err
+	}
+	if rowsAffected == 0 {
+		log.Println("No session found to terminate.")
+		return errors.New("no session found to terminate")
+	}
+
+	log.Println("Session terminated successfully.")
+	return nil
+}
+
+// find user by auth0 -- called when creating or terminating a session: auth0 is the link between the clientside user payload and a session.
 func (repo *SessionRepository) FindUserByAuth0ID(ctx context.Context, auth0ID string) (*models.User, error) {
 	var user models.User
 	query := `SELECT user_id, auth0_id FROM users WHERE auth0_id = $1;`

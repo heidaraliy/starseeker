@@ -11,15 +11,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserSessionSignInHandler struct {
-	userSessionSignInService *sessionService.SessionSignInService
+type UserSessionSignOutHandler struct {
+	userSessionSignOutService *sessionService.SessionSignOutService
 }
 
-func NewUserSessionSignInHandler(userSessionSignInService *sessionService.SessionSignInService) *UserSessionSignInHandler {
-	return &UserSessionSignInHandler{userSessionSignInService: userSessionSignInService}
+func NewUserSessionSignOutHandler(userSessionSignOutService *sessionService.SessionSignOutService) *UserSessionSignOutHandler {
+	return &UserSessionSignOutHandler{userSessionSignOutService: userSessionSignOutService}
 }
 
-func (h *UserSessionSignInHandler) UserSessionCreationHandler(c *gin.Context) {
+func (h *UserSessionSignOutHandler) UserSessionTerminationHandler(c *gin.Context) {
 	user, exists := c.Get("user")
 	log.Printf("Context 'user' contains: %v", user)
 	if !exists {
@@ -35,16 +35,13 @@ func (h *UserSessionSignInHandler) UserSessionCreationHandler(c *gin.Context) {
 	}
 	log.Println("Context valid.")
 
-	// Prepare a new session model
-	session := models.Session{
-		UserID:  userModel.UserID,
-		Auth0ID: userModel.Auth0ID,
-	}
+	// prepare the session, fields already set in our repo
+	session := models.Session{}
 
-	log.Printf("Received user data for session creation: %+v", user) // Log the received user data
+	log.Printf("Received user data for session termination: %+v", user) // Log the received user data
 
 	// Call the service to create a new session
-	if err := h.userSessionSignInService.CreateNewUserSession(c.Request.Context(), session, userModel); err != nil {
+	if err := h.userSessionSignOutService.TerminatingExistingUserSession(c.Request.Context(), session, userModel); err != nil {
 		// Handle different types of errors accordingly
 		if errors.Is(err, repositories.ErrSessionNotFound) {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Session not found."})
@@ -57,5 +54,5 @@ func (h *UserSessionSignInHandler) UserSessionCreationHandler(c *gin.Context) {
 	}
 
 	// If successful, return a success response
-	c.JSON(http.StatusOK, gin.H{"message": "User session created successfully."})
+	c.JSON(http.StatusOK, gin.H{"message": "User session terminated successfully."})
 }
