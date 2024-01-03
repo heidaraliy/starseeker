@@ -5,16 +5,42 @@ import colored_logo from '../assets/starseeker_color.png';
 import colored_sign_out from '../assets/sign_out_color.png';
 import AppSidebar from './AppSidebar';
 import { useAuth0 } from '@auth0/auth0-react';
+import useFetchAuth0User from '../hooks/useFetchAuth0User';
+import useSendUserToBackend from '../hooks/useSendUserToBackend';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const location = useLocation();
   const currentPath = location.pathname;
-  const { logout } = useAuth0();
+  const { isAuthenticated, logout } = useAuth0();
+  const { userDetails } = useFetchAuth0User();
+  const { sendUser } = useSendUserToBackend();
+  const [isUserDataSent, setIsUserDataSent] = useState(false);
 
   const handleSignOut = () => {
-    logout();
+    console.log('User signing out.');
+    const sendUserInfoToBackend = async () => {
+      if (isAuthenticated && userDetails && !isUserDataSent) {
+        try {
+          console.log('Sending user data to backend.');
+          await sendUser(
+            'http://localhost:8080/api/user/sign_out',
+            'POST',
+            userDetails
+          );
+          console.log('User signed out, session terminated.');
+          setIsUserDataSent(true);
+          logout();
+        } catch (error) {
+          console.error('Error sending user data to backend:', error);
+        }
+      } else {
+        logout();
+      }
+    };
+
+    sendUserInfoToBackend();
   };
 
   const toggleMobileNavbar = () => {

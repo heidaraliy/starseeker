@@ -15,6 +15,11 @@ type UserSessionSignInHandler struct {
 	userSessionSignInService *sessionService.SessionSignInService
 }
 
+type RequestContext struct {
+	IPAddress  string
+	DeviceType string
+}
+
 func NewUserSessionSignInHandler(userSessionSignInService *sessionService.SessionSignInService) *UserSessionSignInHandler {
 	return &UserSessionSignInHandler{userSessionSignInService: userSessionSignInService}
 }
@@ -35,10 +40,15 @@ func (h *UserSessionSignInHandler) UserSessionCreationHandler(c *gin.Context) {
 	}
 	log.Println("Context valid.")
 
+	reqContext := RequestContext{
+		IPAddress:  c.ClientIP(),
+		DeviceType: c.Request.UserAgent(),
+	}
+
 	// Prepare a new session model
 	session := models.Session{
-		UserID:  userModel.UserID,
-		Auth0ID: userModel.Auth0ID,
+		IPAddress:         reqContext.IPAddress,
+		SessionDeviceType: reqContext.DeviceType,
 	}
 
 	log.Printf("Received user data for session creation: %+v", user) // Log the received user data
@@ -57,5 +67,5 @@ func (h *UserSessionSignInHandler) UserSessionCreationHandler(c *gin.Context) {
 	}
 
 	// If successful, return a success response
-	c.JSON(http.StatusOK, gin.H{"message": "User session created successfully."})
+	c.JSON(http.StatusOK, gin.H{"message": "User validated and session created successfully."})
 }

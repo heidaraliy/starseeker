@@ -1,60 +1,37 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import axios from 'axios';
+import useFetchAuth0User from '../hooks/useFetchAuth0User';
+import useSendUserToBackend from '../hooks/useSendUserToBackend';
 
 const AuthenticationHandler = () => {
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated } = useAuth0();
+  const { userDetails } = useFetchAuth0User();
+  const { sendUser } = useSendUserToBackend();
+  const [isUserDataSent, setIsUserDataSent] = useState(false);
 
   useEffect(() => {
-    const auth0Domain: string = import.meta.env.VITE_AUTH0_DOMAIN;
-    const updateUserInfo = async () => {
-      if (isAuthenticated) {
-        console.log('User authenticated. Starting database ingestion check.');
+    const sendUserInfoToBackend = async () => {
+      if (userDetails && !isUserDataSent) {
         try {
-          console.log('Attempting to retrieve access token.');
-          const token = await getAccessTokenSilently();
-          // ({
-          //   authorizationParams: {
-          //     audience: 'https://api.example.com/', // Value in Identifier field for the API being called.
-          //     scope: 'read:posts', // Scope that exists for the API being called. You can create these through the Auth0 Management API or through the Auth0 Dashboard in the Permissions view of your API.
-          //   },
-          // });
-          console.log('Token retrieved. Attempting to fetch user data.');
-          console.log('Attempting to retrieve user data.');
-          const response = await axios.get(`https://${auth0Domain}/userinfo`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          const userDetails = response.data;
-          console.log(
-            'User data retrieved. \n\n',
-            JSON.stringify(userDetails, null, 2)
+          console.log('Sending user data to backend.');
+          await sendUser(
+            'http://localhost:8080/api/user/auth',
+            'POST',
+            userDetails
           );
-
-          axios
-            .post('http://localhost:8080/api/user/auth', userDetails, {
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-              },
-            })
-            .then((response) => {
-              console.log('Response from the server:', response.data);
-            })
-            .catch((error) => {
-              console.error('Error during database update:', error);
-            });
+          setIsUserDataSent(true);
         } catch (error) {
-          console.error('Error during authentication:', error);
+          console.error('Error sending user data to backend:', error);
         }
       }
     };
 
-    updateUserInfo();
-  }, [isAuthenticated, getAccessTokenSilently]);
+    if (isAuthenticated) {
+      sendUserInfoToBackend();
+    }
+  }, [isAuthenticated, userDetails, sendUser, isUserDataSent]);
 
-  return null; // This component doesn't render anything
+  return null;
 };
 
 export default AuthenticationHandler;

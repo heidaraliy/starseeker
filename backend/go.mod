@@ -21,6 +21,8 @@ require (
 	github.com/gorilla/securecookie v1.1.1 // indirect
 	github.com/gorilla/sessions v1.2.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
+	github.com/mssola/user_agent v0.6.0 // indirect
+	github.com/mssola/useragent v1.0.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/objx v0.5.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect

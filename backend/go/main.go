@@ -40,12 +40,14 @@ func main() {
 	// Setup services
 	userService := userServices.NewUserService(userRepository)
 	userSessionSignInService := sessionServices.NewSessionSignInService(sessionRepository)
+	userSessionSignOutService := sessionServices.NewSessionSignOutService(sessionRepository)
 
 	// Setup handlers
 	userHandler := handlers.NewUserHandler(userService)
 	userSessionSignInHandler := handlers.NewUserSessionSignInHandler(userSessionSignInService)
+	userSessionSignOutHandler := handlers.NewUserSessionSignOutHandler(userSessionSignOutService)
 
-	routes.SetupRoutes(r, userHandler, userSessionSignInHandler)
+	routes.SetupRoutes(r, userHandler, userSessionSignInHandler, userSessionSignOutHandler)
 
 	port := ":8080"
 

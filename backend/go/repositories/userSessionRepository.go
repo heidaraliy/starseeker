@@ -38,7 +38,6 @@ var ErrSessionUpdateFailed = errors.New("session update failed")
 func (repo *SessionRepository) CreateUserSession(ctx context.Context, session *models.Session, user *models.User) error {
 	log.Printf("Finding user by Auth0 ID: %s", user.Auth0ID.String)
 	// init user model
-	// Use a different variable name for the user returned by FindUserByAuth0ID
 	foundUser, err := repo.FindUserByAuth0ID(ctx, user.Auth0ID.String)
 	if err != nil {
 		log.Printf("Failure to find user by Auth0ID: %s", err)
@@ -55,10 +54,10 @@ func (repo *SessionRepository) CreateUserSession(ctx context.Context, session *m
 
 	// db insert
 	log.Printf("Executing CreateUserSession for session: %+v\n", session)
-	query := `INSERT INTO user_sessions (session_id, user_id, auth0_id, session_created_at, ip_address, session_device_type) VALUES ($1, $2, $3, $4, $5, $6);`
+	query := `INSERT INTO user_sessions (session_id, user_id, auth0_id, session_created_at, status, ip_address, session_device_type) VALUES ($1, $2, $3, $4, $5, $6, $7);`
 
 	// handle errors
-	_, err = repo.DB.ExecContext(ctx, query, session.SessionID, session.UserID, session.Auth0ID, session.SessionCreatedAt, session.IPAddress, session.SessionDeviceType)
+	_, err = repo.DB.ExecContext(ctx, query, session.SessionID, session.UserID, session.Auth0ID, session.SessionCreatedAt, session.Status, session.IPAddress, session.SessionDeviceType)
 	if err != nil {
 		log.Printf("Error executing CreateSession query: %v\n", err)
 		return err
@@ -67,31 +66,30 @@ func (repo *SessionRepository) CreateUserSession(ctx context.Context, session *m
 	return nil
 }
 
-// create a user session
+// terminate a user session
 func (repo *SessionRepository) TerminateUserSession(ctx context.Context, session *models.Session, user *models.User) error {
 	log.Printf("Terminating session for user with Auth0 ID: %s", user.Auth0ID.String)
 
-	log.Printf("Finding user by Auth0 ID: %s", user.Auth0ID.String)
-	// init user model
-	// Use a different variable name for the user returned by FindUserByAuth0ID
-	_, err := repo.FindSessionByAuth0ID(ctx, user.Auth0ID.String)
+	log.Printf("Finding session by Auth0 ID: %s", user.Auth0ID.String)
+	foundSession, err := repo.FindSessionByAuth0ID(ctx, user.Auth0ID.String)
 	if err != nil {
-		log.Printf("Failure to find user by Auth0ID: %s", err)
+		log.Printf("Failure to find user session by Auth0ID: %s", err)
 		return err
 	}
+	log.Printf("Found session details: %v", foundSession)
 
-	log.Println("Setting session creation fields.")
+	log.Println("Setting session termination fields.")
 	// set session vars
 	currentTime := time.Now()
-	session.SessionTerminatedAt = sql.NullTime{Time: currentTime, Valid: true}
-	session.Status = "TERMINATED"
+	foundSession.SessionTerminatedAt = sql.NullTime{Time: currentTime, Valid: true}
+	foundSession.Status = "TERMINATED"
 
 	// db insert
-	log.Printf("Executing TerminateUserSession for session: %+v\n", session)
-	query := `UPDATE user_sessions SET session_terminated_at = $1, status = $2 WHERE user_id = $3 AND auth0_id = $4 AND status != 'TERMINATED';`
+	log.Printf("Executing TerminateUserSession for session: %+v\n", foundSession)
+	query := `UPDATE user_sessions SET session_terminated_at = $1, status = $2 WHERE auth0_id = $3 AND status != 'TERMINATED';`
 
 	// handle errors
-	res, err := repo.DB.ExecContext(ctx, query, currentTime, session.Status, user.UserID, user.Auth0ID.String)
+	res, err := repo.DB.ExecContext(ctx, query, foundSession.SessionTerminatedAt, foundSession.Status, foundSession.Auth0ID)
 	if err != nil {
 		log.Printf("Error executing TerminateUserSession query: %v\n", err)
 		return err
@@ -105,7 +103,6 @@ func (repo *SessionRepository) TerminateUserSession(ctx context.Context, session
 	}
 	if rowsAffected == 0 {
 		log.Println("No session found to terminate.")
-		return errors.New("no session found to terminate")
 	}
 
 	log.Println("Session terminated successfully.")
@@ -135,11 +132,12 @@ func (repo *SessionRepository) FindUserByAuth0ID(ctx context.Context, auth0ID st
 // find session by auth0 -- called when determining session creation logic.
 func (repo *SessionRepository) FindSessionByAuth0ID(ctx context.Context, auth0ID string) (*models.Session, error) {
 	var session models.Session
-	query := `SELECT session_id, auth0_id FROM user_sessions WHERE auth0_id = $1;`
+	query := `SELECT session_id, auth0_id, user_id FROM user_sessions WHERE auth0_id = $1;`
 
 	err := repo.DB.QueryRowContext(ctx, query, auth0ID).Scan(
 		&session.SessionID,
 		&session.Auth0ID,
+		&session.UserID,
 	)
 
 	if err != nil {
