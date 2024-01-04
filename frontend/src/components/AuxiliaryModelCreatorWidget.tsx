@@ -103,7 +103,7 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
   const handleProcessModel = async (dataToSend: DataToSend) => {
     try {
       const response = await axios.post('/api/model/create', dataToSend);
-      console.log('Model created! Response data:', response.data);
+      console.log('Model data sent. Response:', response.data);
     } catch (error) {
       console.error('Model creation failure.', error);
       console.log(dataToSend);

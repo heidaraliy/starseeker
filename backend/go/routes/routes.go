@@ -30,6 +30,7 @@ func setupUserRoutes(router *gin.Engine, userHandler *handlers.UserHandler, user
 		log.Println("Setting up API routes!")
 		users.POST("/api/user/auth", userHandler.UserUpdateHandler, userSessionSignInHandler.UserSessionCreationHandler)
 		users.POST("/api/user/sign_out", userSessionSignOutHandler.UserSessionTerminationHandler)
+		users.POST("/api/model/create")
 		// api routes
 	}
 }

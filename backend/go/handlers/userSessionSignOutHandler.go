@@ -36,11 +36,7 @@ func (h *UserSessionSignOutHandler) UserSessionTerminationHandler(c *gin.Context
 		Email:   jsonPayload.Email,
 	}
 
-	log.Printf("Received user data for session termination: %+v", user) // Log the received user data
-
-	// Call the service to create a new session
 	if err := h.userSessionSignOutService.TerminatingExistingUserSession(c.Request.Context(), user); err != nil {
-		// Handle different types of errors accordingly
 		if errors.Is(err, repositories.ErrSessionNotFound) {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Session not found."})
 			log.Printf("Session not found: %s", err)

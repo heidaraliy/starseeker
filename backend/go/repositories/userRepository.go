@@ -1,6 +1,3 @@
-//honestly might break this up later but will go with single user repo for now
-//houses all user backend > db r/w functionality --
-
 package repositories
 
 import (
@@ -47,14 +44,14 @@ type UserUpdate struct {
 	UserID          bool
 }
 
-// error vars
+// user repo error vars
 var ErrUserNotFound = errors.New("user not found")
 var ErrEmailInUse = errors.New("email already in use")
 var ErrPasswordTooShort = errors.New("password too short")
 var ErrEmailInvalid = errors.New("invalid email")
 
-// create a user
 func (repo *UserRepository) CreateUser(ctx context.Context, user *models.User) error {
+	// prepare user fields for creation
 	now := time.Now()
 	newUUID := uuid.New()
 	user.UserProfileCreatedAt = now
@@ -62,7 +59,9 @@ func (repo *UserRepository) CreateUser(ctx context.Context, user *models.User) e
 	user.UserID = newUUID
 	user.Status = "ACTIVE_UNVERIFIED"
 
-	query := "INSERT INTO users (user_id, email, auth0_id, user_profile_created_at, user_profile_updated_at, status) VALUES ($1, $2, $3, $4, $5, $6);"
+	query := `INSERT INTO users 
+			  (user_id, email, auth0_id, user_profile_created_at, user_profile_updated_at, status) 
+			  VALUES ($1, $2, $3, $4, $5, $6);`
 
 	log.Printf("Executing CreateUser for user: %+v\n", user)
 
@@ -76,7 +75,9 @@ func (repo *UserRepository) CreateUser(ctx context.Context, user *models.User) e
 
 // find a user by email
 func (repo *UserRepository) FindByEmail(ctx context.Context, email string) (*models.User, error) {
-	query := `SELECT user_id, email, auth0_id, user_profile_created_at, user_profile_updated_at FROM users WHERE email = $1;`
+	query := `SELECT user_id, email, auth0_id, user_profile_created_at, user_profile_updated_at 
+			  FROM users 
+			  WHERE email = $1;`
 
 	log.Printf("Executing FindByEmail for email: %s\n", email)
 

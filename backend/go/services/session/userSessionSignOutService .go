@@ -31,5 +31,5 @@ func (s *SessionSignOutService) TerminatingExistingUserSession(ctx context.Conte
 
 	log.Printf("User session found for user: %s, session ID: %s", user.Email, existingUserSession.SessionID)
 
-	return s.sessionRepo.TerminateUserSession(ctx, existingUserSession, &user)
+	return s.sessionRepo.TerminateUserSession(ctx, &user)
 }

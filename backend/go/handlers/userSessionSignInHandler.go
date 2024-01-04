@@ -25,6 +25,7 @@ func NewUserSessionSignInHandler(userSessionSignInService *sessionService.Sessio
 }
 
 func (h *UserSessionSignInHandler) UserSessionCreationHandler(c *gin.Context) {
+	// use the context we passed in from the UserUpdateHandler
 	user, exists := c.Get("user")
 	log.Printf("Context 'user' contains: %v", user)
 	if !exists {
@@ -40,22 +41,21 @@ func (h *UserSessionSignInHandler) UserSessionCreationHandler(c *gin.Context) {
 	}
 	log.Println("Context valid.")
 
+	// use the RequestContext struct to assign IP and UserAgent to the session creation fields
 	reqContext := RequestContext{
 		IPAddress:  c.ClientIP(),
 		DeviceType: c.Request.UserAgent(),
 	}
 
-	// Prepare a new session model
+	// prep a new session
 	session := models.Session{
 		IPAddress:         reqContext.IPAddress,
 		SessionDeviceType: reqContext.DeviceType,
 	}
 
-	log.Printf("Received user data for session creation: %+v", user) // Log the received user data
-
-	// Call the service to create a new session
+	// call sign in service
 	if err := h.userSessionSignInService.CreateNewUserSession(c.Request.Context(), session, userModel); err != nil {
-		// Handle different types of errors accordingly
+		// error handling
 		if errors.Is(err, repositories.ErrSessionNotFound) {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Session not found."})
 			log.Printf("Session not found: %s", err)
@@ -66,6 +66,6 @@ func (h *UserSessionSignInHandler) UserSessionCreationHandler(c *gin.Context) {
 		return
 	}
 
-	// If successful, return a success response
+	// success response on validation/session creation
 	c.JSON(http.StatusOK, gin.H{"message": "User validated and session created successfully."})
 }

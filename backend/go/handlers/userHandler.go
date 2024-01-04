@@ -33,14 +33,14 @@ func (h *UserHandler) UserUpdateHandler(c *gin.Context) {
 		Auth0ID: sql.NullString{String: jsonPayload.Sub, Valid: jsonPayload.Sub != ""},
 		Email:   jsonPayload.Email,
 	}
+	log.Printf("User data received.")
 
-	log.Printf("Received user data for user creation and update: %+v", user) // Log the received user data
-
+	// update the changed (if any) user fields on sign in
 	if err := h.userService.UpdateUserDetails(c, user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	// Instead of sending a response, set user data in context and call next
-	c.Set("user", user) // Set the user object in context for the next handler to use
-	c.Next()            // This will pass control to the next handler in the chain
+	// set into context for "user" and pass control using Next() to the next handler (session sign in)
+	c.Set("user", user)
+	c.Next()
 }
