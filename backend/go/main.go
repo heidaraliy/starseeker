@@ -5,6 +5,7 @@ import (
 	"backend/go/handlers"
 	"backend/go/repositories"
 	"backend/go/routes"
+	modelServices "backend/go/services/model"
 	sessionServices "backend/go/services/session"
 	userServices "backend/go/services/user"
 	"log"
@@ -36,18 +37,21 @@ func main() {
 
 	userRepository := repositories.NewUserRepository(dbConn)
 	sessionRepository := repositories.NewSessionRepository(dbConn)
+	modelRepository := repositories.NewModelRepository(dbConn)
 
 	// Setup services
 	userService := userServices.NewUserService(userRepository)
 	userSessionSignInService := sessionServices.NewSessionSignInService(sessionRepository)
 	userSessionSignOutService := sessionServices.NewSessionSignOutService(sessionRepository)
+	modelCreationService := modelServices.NewModelCreationService(modelRepository)
 
 	// Setup handlers
 	userHandler := handlers.NewUserHandler(userService)
 	userSessionSignInHandler := handlers.NewUserSessionSignInHandler(userSessionSignInService)
 	userSessionSignOutHandler := handlers.NewUserSessionSignOutHandler(userSessionSignOutService)
+	modelCreationHandler := handlers.NewModelCreationHandler(modelCreationService, userRepository)
 
-	routes.SetupRoutes(r, userHandler, userSessionSignInHandler, userSessionSignOutHandler)
+	routes.SetupRoutes(r, userHandler, userSessionSignInHandler, userSessionSignOutHandler, modelCreationHandler)
 
 	port := ":8080"
 

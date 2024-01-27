@@ -16,7 +16,7 @@ import (
 type IUserRepository interface {
 	CreateUser(ctx context.Context, user *models.User) error
 	UpdateUser(ctx context.Context, user models.User, updates UserUpdate) error
-	FindByEmail(ctx context.Context, email string) (*models.User, error)
+	FindUserByEmail(ctx context.Context, email string) (*models.User, error)
 }
 
 type UserRepository struct {
@@ -74,12 +74,12 @@ func (repo *UserRepository) CreateUser(ctx context.Context, user *models.User) e
 }
 
 // find a user by email
-func (repo *UserRepository) FindByEmail(ctx context.Context, email string) (*models.User, error) {
+func (repo *UserRepository) FindUserByEmail(ctx context.Context, email string) (*models.User, error) {
 	query := `SELECT user_id, email, auth0_id, user_profile_created_at, user_profile_updated_at 
 			  FROM users 
 			  WHERE email = $1;`
 
-	log.Printf("Executing FindByEmail for email: %s\n", email)
+	log.Printf("Executing FindUserByEmail for email: %s\n", email)
 
 	var user models.User
 	err := repo.DB.QueryRowContext(ctx, query, email).Scan(
@@ -95,7 +95,7 @@ func (repo *UserRepository) FindByEmail(ctx context.Context, email string) (*mod
 			log.Printf("User not found for email: %s\n", email)
 			return nil, ErrUserNotFound
 		}
-		log.Printf("Error executing FindByEmail query for email %s: %v\n", email, err)
+		log.Printf("Error executing FindUserByEmail query for email %s: %v\n", email, err)
 		return nil, err
 	}
 

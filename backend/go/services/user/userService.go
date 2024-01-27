@@ -19,7 +19,7 @@ func NewUserService(userRepo *repositories.UserRepository) *UserService {
 func (s *UserService) UpdateUserDetails(ctx context.Context, user models.User) error {
 	log.Println("Checking for existing user details for:", user.Email)
 
-	existingUser, err := s.userRepo.FindByEmail(ctx, user.Email)
+	existingUser, err := s.userRepo.FindUserByEmail(ctx, user.Email)
 	if err != nil {
 		if errors.Is(err, repositories.ErrUserNotFound) {
 			// User not found, create new user

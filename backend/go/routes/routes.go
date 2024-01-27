@@ -8,9 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(router *gin.Engine, userHandler *handlers.UserHandler, userSessionSignInHandler *handlers.UserSessionSignInHandler, userSessionSignOutHandler *handlers.UserSessionSignOutHandler) {
+func SetupRoutes(router *gin.Engine, userHandler *handlers.UserHandler, userSessionSignInHandler *handlers.UserSessionSignInHandler, userSessionSignOutHandler *handlers.UserSessionSignOutHandler, modelCreationHandler *handlers.ModelCreationHandler) {
 	setupCORS(router)
-	setupUserRoutes(router, userHandler, userSessionSignInHandler, userSessionSignOutHandler)
+	setupUserRoutes(router, userHandler, userSessionSignInHandler, userSessionSignOutHandler, modelCreationHandler)
 }
 
 func setupCORS(router *gin.Engine) {
@@ -23,14 +23,14 @@ func setupCORS(router *gin.Engine) {
 	router.Use(cors.New(config))
 }
 
-func setupUserRoutes(router *gin.Engine, userHandler *handlers.UserHandler, userSessionSignInHandler *handlers.UserSessionSignInHandler, userSessionSignOutHandler *handlers.UserSessionSignOutHandler) {
+func setupUserRoutes(router *gin.Engine, userHandler *handlers.UserHandler, userSessionSignInHandler *handlers.UserSessionSignInHandler, userSessionSignOutHandler *handlers.UserSessionSignOutHandler, modelCreationHandler *handlers.ModelCreationHandler) {
 	users := router.Group("")
 
 	{
 		log.Println("Setting up API routes!")
 		users.POST("/api/user/auth", userHandler.UserUpdateHandler, userSessionSignInHandler.UserSessionCreationHandler)
 		users.POST("/api/user/sign_out", userSessionSignOutHandler.UserSessionTerminationHandler)
-		users.POST("/api/model/create")
+		users.POST("/api/model/create", modelCreationHandler.ModelCreationHandler)
 		// api routes
 	}
 }

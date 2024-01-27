@@ -4,6 +4,7 @@ import (
 	"backend/go/models"
 	"context"
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"log"
 	"time"
@@ -35,7 +36,7 @@ var ErrModelAuthorizationFailed = errors.New("user not authorized to create mode
 var ErrModelLimitExceeded = errors.New("user has exceeded the model creation limit")
 var ErrModelFormatUnsupported = errors.New("unsupported model format")
 
-func (repo *UserRepository) CreateModel(ctx context.Context, model *models.Model, user *models.User) error {
+func (repo *ModelRepository) CreateModel(ctx context.Context, model *models.Model, user *models.User) error {
 	// prepare user fields for creation
 	now := time.Now()
 	newUUID := uuid.New()
@@ -46,13 +47,25 @@ func (repo *UserRepository) CreateModel(ctx context.Context, model *models.Model
 	model.ModelCreatedByUserID = user.UserID
 	model.ModelStatus = "ACTIVE" // models should only ever be in an active, draft, archived, or deleted status
 
+	packagesJSON, err := json.Marshal(model.ModelPackages)
+	if err != nil {
+		log.Printf("Error marshaling model packages to JSON: %v\n", err)
+		return err
+	}
+
+	parametersJSON, err := json.Marshal(model.ModelParameters)
+	if err != nil {
+		log.Printf("Error marshaling model parameters to JSON: %v\n", err)
+		return err
+	}
+
 	query := `INSERT INTO models 
 	(model_id, model_created_at, model_updated_at, model_created_by_user_id, model_name, model_data_type, model_language, model_packages, model_parameters, model_status) 
-	VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`
 
 	log.Printf("Executing CreateModel for model: %+v\n", model)
 
-	_, err := repo.DB.ExecContext(ctx, query,
+	_, err = repo.DB.ExecContext(ctx, query,
 		model.ModelID,
 		model.ModelCreatedAt,
 		model.ModelUpdatedAt,
@@ -60,8 +73,8 @@ func (repo *UserRepository) CreateModel(ctx context.Context, model *models.Model
 		model.ModelName,
 		model.ModelDataType,
 		model.ModelLanguage,
-		model.ModelPackages,
-		model.ModelParameters,
+		string(packagesJSON),
+		string(parametersJSON),
 		model.ModelStatus,
 	)
 	if err != nil {
