@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { modelParameters as modelParametersConfig } from './models/ModelParameters';
 import axios from 'axios';
+import useFetchAuth0User from '../hooks/useFetchAuth0User';
 
 interface AuxiliaryModelCreatorProps {
   selectedModel: string;
@@ -15,6 +16,7 @@ interface DataToSend {
   model_language: string;
   model_packages: string[];
   model_parameters: { [key: string]: string | number };
+  email: string;
 }
 
 const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
@@ -28,6 +30,7 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
     selectedPackages?.includes('Optuna' || 'Spearmint') ?? false;
 
   const [modelName, setModelName] = useState('');
+  const { userDetails } = useFetchAuth0User();
 
   const handleModelNameChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -69,10 +72,15 @@ const AuxiliaryModelCreatorWidget: FC<AuxiliaryModelCreatorProps> = ({
       model_language: selectedLanguage,
       model_packages: selectedPackages,
       model_parameters: modelParameters,
+      email: userDetails.email,
     };
+    console.log(dataToSend);
 
     try {
-      const response = await axios.post('/api/model/create', dataToSend);
+      const response = await axios.post(
+        'http://localhost:8080/api/model/create',
+        dataToSend
+      );
       console.log('Model data sent. Response:', response.data);
     } catch (error) {
       console.error('Model creation failure.', error);

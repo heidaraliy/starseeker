@@ -5,11 +5,11 @@ import google_line_chart from '../assets/google_line_chart.svg';
 export const forecastTypeOptions = [
   'Time Series',
   // 'Cross-Sectional Data',
-  // 'Logitudinal Data',
+  // 'Longitudinal Data',
 ];
 
 export const forecastToIcon = {
   'Time Series': google_hourglass,
   'Cross-Sectional Data': google_shutter,
-  'Logitudinal Data': google_line_chart,
+  'Longitudinal Data': google_line_chart,
 };
